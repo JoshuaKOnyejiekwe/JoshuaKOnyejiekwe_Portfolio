@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<!--
+  JOSHUA PORTFOLIO · index.html   (content only: looks = style.css, motion = main.js)
+  • Search this file for [EDIT] to find what to change. Projects, code snippets and colors are in main.js.
+  • Put images in assets/:  profile.jpg (headshot) · banner.jpg (~1600×600) · resume.pdf · company.png (logos).
+    Keep each image under ~200 KB (WebP or compressed JPG).
+  • Preview: open index.html in a browser — no build step.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- viewport-fit=cover lets the page use the full screen on phones with notches -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+
+
+<!-- Link Sharing Stuff-->
+<!-- [EDIT] Page title (browser tab) + the text shown when my link is shared -->
+<title>Joshua Onyejiekwe</title> <!--- Changes the tabs name when you hover on it--->
+<meta name="description" content="A Software Engineering building a career in tech. Projects, skills, and contact.">
+<meta property="og:title" content="Joshua — Computer Science | Software Engineering">
+<meta property="og:description" content="Projects, skills, and contact.">
+<!-- [EDIT] Once the site is live, add a preview image (1200×630) so links look good on LinkedIn:
+<meta property="og:image" content="https://yourdomain.com/assets/preview.png">
+-->
+
+
+
+<!-- Font: Inter from Google Fonts. (To self-host for speed, download it and use @font-face in style.css.) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Thin bar at the very top that fills as you scroll (controlled by main.js) -->
+<div id="progress"></div>
+
+
+
+<!-- HEADER — sticky bar. Each nav link href must match a section id below; if you delete a section, delete its link. -->
+<header class="top">
+  <div class="top-in wrap">
+    <a class="brand" href="#top">
+      <!-- Avatar: shows "J" until assets/profile.jpg exists. [EDIT] the letter if you like -->
+      <span class="av">J<img src="assets/profile.jpg" alt="" onerror="this.remove()"></span>
+      <!-- [EDIT] My name and one-line title -->
+      <span class="who"><b>Joshua Onyejiekwe</b><small>Computer Science | Software Engineering</small></span>
+    </a>
+
+
+    <!--These are the tabs on top -->
+    <!-- Section links: href = a section id below -->
+    <nav id="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#awards">Extracurricular</a>
+      <!-- <a href="#gallery">Gallery</a> -->
+      <a href="#contact">Contact</a>
+    </nav>
+
+
+
+    <!-- Opens the command palette (also Ctrl/⌘ + K). See "command palette" in main.js -->
+    <button id="kbd" class="kbd-btn" aria-label="Search and commands"><span>Search</span><kbd>Ctrl K</kbd></button>
+  </div>
+</header>
+
+
+
+<main id="top">
+  <!-- HERO — banner background, photo, headline, buttons, code card -->
+  <section class="hero-wrap">
+    <!-- Banner: [EDIT] for a photo, add <img src="assets/banner.jpg" alt=""> inside this div. Keep the subject on the RIGHT (the left fades out so text stays readable). -->
+    <div class="hero-bg" aria-hidden="true"></div>
+
+    <div class="hero wrap">
+      <div class="hero-copy">
+
+        <!-- Photo: assets/profile.jpg replaces the silhouette automatically -->
+        <div class="me">
+          <div class="photo">
+            <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="38" r="17"/><path d="M16 96c0-24 15-36 34-36s34 12 34 36z"/></svg>
+            <img src="assets/profile.jpg" alt="Portrait of Joshua" onerror="this.remove()">
+          </div>
+
+
+          <!-- [EDIT] Greeting. Delete the "Open to work" part when you're not looking. -->
+          <div class="me-t"><b>Joshua Onyejiekwe</b><small><i></i> Open to work</small></div>
+        </div>
+
+
+        <!--About me text / paragraphs-->
+        <!-- [EDIT] The small label, the big headline, and the intro paragraph / 1st section content, the abt me's and what im doing-->
+        <p class="eyebrow">Building a career in tech</p>
+        <h1>Designing and building software with purpose.</h1>
+        <p class="sub">Hi, I’m Joshua. This site showcases the web apps I’ve built and the technical skills that power them.</p>
+
+
+
+        <!-- Buttons. "View Projects" jumps to the projects section; "Resume" opens assets/resume.pdf -->
+        <div class="cta">
+          <a class="btn dark" href="#projects">View Projects</a>
+          <a class="btn" href="assets/JoshuaResumeMain.pdf">Resume</a>
+        </div>
+
+
+
+        <!-- [EDIT] my links in the 1st section with notepad. -->
+        <div class="social">
+          <a href="https://github.com/JoshuaKOnyejiekwe" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/joshua-onyejiekwe-0bb779281/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="joshuaonyejiekwe12@gmail.com">Email</a>
+        </div>
+      </div>
+
+
+
+      <!-- CODE CARD — main.js plays the snippets (const SNIPS); the code below only shows if JavaScript is off -->
+      <div class="code" aria-label="Developer profile as code">
+        <div class="code-bar">
+          <i></i><i></i><i></i>
+          <span id="fname">joshua.config.js</span>                                  <!-- file name (changes per snippet) -->
+          <b class="lang" id="lang"><i></i><em>JavaScript</em></b>                  <!-- language badge -->
+          <b class="stat" id="stat">Idle</b>                                         <!-- typing… / running / done -->
+          <button class="run" id="run" aria-label="Pause or resume the code animation">⏸ Pause</button>
+        </div>
+<pre><code><span class="c">// who I am</span>
+<span class="k">const</span> <span class="v">joshua</span> = {
+  role: <span class="s">"Computer Science"</span>,
+  also: <span class="s">"Developer"</span>,
+  building: <span class="s">"a career in tech"</span>,
+  stack: [<span class="s">"Python"</span>, <span class="s">"SQL"</span>, <span class="s">"JavaScript"</span>],
+  openToWork: <span class="b">true</span>,
+};<span class="cur"></span></code></pre>
+        <!-- Terminal area where each snippet's output prints -->
+        <div class="term" id="term" aria-live="polite"><p class="dim">$ node joshua.config.js</p></div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- GITHUB CARD — [EDIT] username here and GH_USER in main.js. Counts load only on a real website; the squares are sample data. -->
+  <section class="wrap band" aria-label="GitHub">
+    <div class="card gh">
+      <div class="gh-l">
+        <div class="card-h"><div><p class="tag">GitHub</p><h3>@JoshuaKOnyejiekwe</h3></div></div>
+        <div class="ghs"><div><b id="gh-repos">—</b><small>Public repos</small></div><div><b id="gh-followers">—</b><small>Followers</small></div></div>
+        <a class="chip-link" href="https://github.com/JoshuaKOnyejiekwe" target="_blank" rel="noopener">View profile ↗</a>
+      </div>
+      <div class="gh-r">
+        <div class="heat" id="heat" aria-hidden="true"></div>
+        <div class="legend"><span>Less</span><i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><span>More</span></div>
+        <!-- Real graph: delete the .heat div above and add <img src="https://ghchart.rshah.org/JoshuaKOnyejiekwe" alt="GitHub contributions"> (works once online) -->
+        <p class="note">Sample activity grid.</p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ABOUT -->
+  <!-- ABOUT — [EDIT] the paragraph and the two lists (add or remove <li>) -->
+  <section id="about" class="wrap">
+    <h2>About</h2>
+    <p class="lead">I’m a Computer Science student and software developer who builds full-stack web apps and never stops learning. Whether it’s a real-world project or something I dreamed up on my own, I’m always up for a new language, a new tool, or a new challenge.</p>
+    <!--div class="two">
+      <div><h3>What I focus on</h3><ul><li>Clean structure and readable code</li><li>Real projects that work end to end</li><li>Learning in public and shipping often</li></ul></div>
+      <div><h3>What I'm building</h3><ul><li>Client website: placeholder</li><li>Software project: placeholder</li><li>Data portfolio: placeholder</li></ul></div>
+    </div>
+  </section-->
+
+
+
+<!-- EDUCATION -->
+  <!-- EDUCATION — [EDIT] one <article class="edu"> per school (copy to add). data-initials = badge letters; for a logo put <img> inside .logo -->
+  <section id="education" class="wrap">
+    <h2>Education</h2>
+    <div class="cards">
+      <article class="edu">
+        <div class="em"><div class="logo" data-initials="UNI"><img src="assets/MSU_logo.jpg" alt="Morgan State University Logo"></div></div>
+        <div><h3> Morgan State University</h3><p class="org">B.S. Computer Science · Expected 2028</p><p class="muted">Baltimore, MD</p></div>
+      </article>
+
+      <!---<article class="edu">
+        <div class="em"><div class="logo" data-initials="CERT"></div></div>
+        <div><h3>Certificate / Bootcamp</h3><p class="org">Program name · 20XX</p><p class="muted">Add a line about it</p></div>
+      </article>
+    </div> --->
+  </section>
+
+
+
+  <!-- EXPERIENCE-->
+  <!-- EXPERIENCE — [EDIT] one <article class="job"> per role, newest first (copy to add). .row title + date · .org company · <ul> bullets (use numbers) · .tags tools -->
+  <section id="experience" class="wrap">
+    <h2>Experience</h2>
+    <div class="tl" id="tl">
+<!--1st Exp-->
+      <article class="job">
+         <!-- Logo example: <div class="logo"><img src="assets/company.png" alt="Company"></div> -->
+        <div class="em"><div class="logo" data-initials="FL"><img src="assets/FearlessTech.jpg" alt="FearlessTech"></div></div>                  
+        <div class="jb">
+          <div class="row"><h3>Fearless | Software Engineering Intern </h3><span class="date">Jun. 2026 – Aug. 2026</span></div>
+          <p class="org">Maryland FAMLI Paid Family Leave Application </p>
+          <ul><li>Built and tested a custom Ruby on Rails validation with RSpec to reject improperly formatted birthdates and dates indicating an age above 120, improving worker-profile data quality.</li></ul>
+          <ul><li>Implemented and tested a Rails validation that limits each worker profile to one physical and one mailing address, preventing duplicate address records and strengthening data integrity.</li></ul>
+          <ul><li>Standardized eligibility-checker terminology across English and Spanish localization files to keep translated text consistent throughout the application.</li></ul>
+          <ul><li>Collaborated with engineers through Git-based pull requests and code reviews to test, refine, and deliver updates to a production application.</li></ul>
+          <p class="tags">HTML · CSS · Ruby on Rails · USWDS</p>
+        </div>
+      </article>
+
+<!--2nd Exp-->
+      <article class="job">
+        <div class="em"><div class="logo" data-initials="UNI"><img src="assets/MSU_logo.jpg" alt="Morgan State University Logo"></div></div>
+        <div class="jb">
+          <div class="row"><h3>CECE LAB </h3><span class="date">Jan. 2025 – Jun. 2025</span></div>
+          <p class="org">Teaching Assistant</p>
+          <ul><li>Introduced students to basic robotics and AI ideas through play-based group activities, keeping lessons engaging and interactive for different learning styles.</li></ul>
+          <!--p class="tags">Python</p> -->
+        </div>
+      </article>
+  </section>
+
+
+
+  <!-- PROJECTS — cards + filters are built by main.js: [EDIT] the list there (const projects) -->
+  <section id="projects" class="wrap">
+    <h2>Projects</h2>
+    <!-- <p class="muted">Selected work. Click a project to see details and links.</p> -->
+    <div class="filters" id="filters"></div>   <!-- filter buttons are created by main.js -->
+    <div class="grid" id="grid"></div>         <!-- project cards are created by main.js -->
+  </section>
+
+
+
+  <!-- SKILLS — [EDIT] three columns of chips; list only what you can talk about -->
+  <section id="skills" class="wrap">
+    <h2>Technical Skills</h2>
+    <div class="three">
+      <div><h3>Languages</h3>
+        <p class="chips"><span>Python</span>
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>SQL</span>
+          <span>Java</span>
+          <span>JavaScript</span>
+          <span>TypeScript</span>
+          <span>PHP</span></p></div>
+
+      <div><h3>Frameworks &amp; Libraries</h3><p class="chips">
+        <span>Ruby on Rails</span><span>Pandas</span><span>Numpy</span><span>Matplotlib</span><span>RSpec</span></p></div>
+
+      <div><h3>Tools &amp; Platforms</h3><p class="chips">
+        <span>VS Code</span>
+        <span>GitHub</span>
+        <span>Git</span>
+        <span>Firebase</span>
+        <span>MySQL</span>
+        <span>MAMP</span></p></div>
+    </div>
+  </section>
+
+
+
+  <!-- AWARDS — [EDIT] two lists -->
+  <section id="awards" class="wrap">
+    <!--<h2>Awards &amp; Activities</h2> Remove one when you get an awards worth putting down -->
+    <h2>Extracurricular</h2>
+    <div class="two">
+      <!-- <div><h3>Extracurricular</h3> -->
+       <ul><li><b>CEAMLS</b></li>
+       <li><b>S.A.C.S</b></li></ul>
+      <!-- </div> -->
+
+    <!--<div><h3>Awards</h3><ul><li>
+        <b>Add a Award</b> Add a Award or group</li><li>
+        <b>Add a Award</b>Add a Award</li></ul></div>-->
+    </div>
+  </section>
+
+
+  <!-- GALLERY — [EDIT] If I want to add pictures adn etc"></div> · copy a <figure> to add more · delete the section (and its nav link) if unused --
+  <section id="gallery" class="wrap">
+    <h2>Gallery</h2>
+    <p class="muted">Photos from events, mentoring, and milestones.</p>
+    <div class="gal">
+      <figure><div class="ph"><span>Photo</span></div><figcaption>Caption for photo one</figcaption></figure>
+      <figure><div class="ph"><span>Photo</span></div><figcaption>Caption for photo two</figcaption></figure>
+      <figure><div class="ph"><span>Photo</span></div><figcaption>Caption for photo three</figcaption></figure>
+    </div>
+  </section>  -->
+
+
+
+  <!--FOOTER / CONTACT-->
+  <!-- CONTACT — [EDIT] email + LinkedIn here; the "Copy email" button uses EMAIL in main.js -->
+  <section id="contact" class="wrap">
+    <h2>Contact</h2>
+    <p class="muted">Want to connect about projects, freelance work, internships, or tech roles? Reach out.</p>
+    <p style="margin-top:14px"><button class="btn" id="copy">Copy email</button></p>
+    <div class="three links">
+      <a href="joshuaonyejiekwe12@gmail.com"><small>Email</small>joshuaonyejiekwe12@gmail.com</a>
+      <a href="https://github.com/JoshuaKOnyejiekwe" target="_blank" rel="noopener"><small>GitHub</small>github.com/JoshuaKOnyejiekwe</a>
+      <a href="https://www.linkedin.com/in/joshua-onyejiekwe-0bb779281/" target="_blank" rel="noopener"><small>LinkedIn</small>Joshua Onyejiekwe</a>
+    </div>
+  </section>
+</main>
+
+
+
+<!-- FOOTER — just a "back to top" link -->
+<footer class="wrap"><a href="#top">Back to top ↑</a></footer>
+
+
+
+<!-- PROJECT POPUP — filled by main.js when a card is clicked; nothing to edit -->
+<dialog id="modal">
+  <button class="x" id="close" aria-label="Close">×</button>
+  <div class="m-img" id="m-img"><span>Project image</span><img src="assets/" alt="Morgan State University Logo"></div>
+  <div class="m-body">
+    <p class="tag" id="m-tag"></p>
+    <h3 id="m-title"></h3>
+    <p class="muted" id="m-date"></p>
+    <p id="m-desc"></p>
+    <p class="chips" id="m-tech"></p>
+    <div class="cta" id="m-links"></div>
+  </div>
+</dialog>
+
+
+
+<!-- COMMAND PALETTE, jump to sections/projects, copy email, switch colorways -->
+<dialog id="palette" aria-label="Command palette">
+  <input id="pin" placeholder="Type a command or search…" autocomplete="off" spellcheck="false">
+  <ul id="plist"></ul>
+</dialog>
+
+<!-- Small pop-up message (e.g. "Email copied") -->
+<div id="toast" role="status"></div>
+
+<!-- COLORWAY PICKER — bottom-left button + panel. The color themes are defined in main.js (search: palettes). -->
+<button id="cw-btn" aria-haspopup="true" aria-expanded="false"><span class="dots" id="cw-dots"></span>Colorways</button>
+<div id="cw-panel" hidden role="dialog" aria-label="Colorways"></div>
+
+<script src="main.js"></script>
+</body>
+</html>
