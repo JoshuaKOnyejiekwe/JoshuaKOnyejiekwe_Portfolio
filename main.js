@@ -8,10 +8,10 @@
 //   Code-card snippets ...... const SNIPS            Typing speed ............ ? 120 : 13  (13 = ms per letter)
 //   How long output stays ... await wait(2400)       Slide directions ........ const rvSets
 //   Card stagger (ms) ....... (i % cols) * 90        Scroll-fade start ....... rootMargin: '0px 0px -7%
-//   Tab highlight offset .... HEADER_GAP             Tilt amount ............. * 6) + 'deg'
+//   Tab highlight offset .... HEADER_GAP
 //
-// SECTIONS: 1 Projects · 2 Nav + timeline · 3 Toast/progress/GitHub · 4 Colorways ·
-//           5 Command palette · 6 Slide-ins · 7 Code card · 8 Tilt + scroll fade · 9 Start
+// SECTIONS: 1 Projects · 2 Nav + timeline · 3 Toast/progress · 4 Colorways ·
+//           5 Command palette · 6 Slide-ins · 7 Code card · 8 Scroll fade · 9 Start
 // ======================================================================
 
 document.documentElement.classList.add('js');     // lets style.css know JavaScript is running
@@ -162,7 +162,7 @@ tlProgress();
 
 
 // ---------------------------------------------------------------------
-// 3 · TOAST · PROGRESS BAR · GITHUB   [EDIT] GH_USER and EMAIL
+// 3 · TOAST · PROGRESS BAR   [EDIT] GH_USER and EMAIL
 // ---------------------------------------------------------------------
 const GH_USER = 'JoshuaKOnyejiekwe';   // [EDIT] My GitHub username
 const EMAIL = 'joshuaonyejiekwe12@gmail.com';  // [EDIT] My Em@il username
@@ -178,22 +178,6 @@ const bar = document.getElementById('progress');
 function prog() { const h = document.documentElement.scrollHeight - innerHeight; bar.style.transform = `scaleX(${h > 0 ? Math.min(1, scrollY / h) : 0})`; }
 addEventListener('scroll', prog, { passive: true }); prog();
 
-// GitHub card: SAMPLE activity squares + real repo/follower counts (counts only load on a real website, else they stay —)
-let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;   // seeded random: the sample squares look the same every load
-const heat = document.getElementById('heat'); let cells = '';
-for (let d = 0; d < 7; d++) for (let w = 0; w < 36; w++) {   // 7 days × 36 weeks (36 must match repeat(36,1fr) in style.css .heat)
-  const r = rnd() * (d === 0 || d === 6 ? 0.55 : 1) * (0.35 + w / 55);   // activity 0–1: weekends lighter, recent weeks busier
-  cells += `<i class="${r > .8 ? 'l4' : r > .6 ? 'l3' : r > .42 ? 'l2' : r > .25 ? 'l1' : ''}" style="--c:${w}"></i>`;   // level → shade l1…l4 (colors in style.css .heat)
-}
-heat.innerHTML = cells;
-(async () => {
-  try {
-    const r = await fetch(`https://api.github.com/users/${GH_USER}`); if (!r.ok) return;
-    const u = await r.json();
-    document.getElementById('gh-repos').textContent = u.public_repos;
-    document.getElementById('gh-followers').textContent = u.followers;
-  } catch (e) { /* blocked in preview; works on your own host */ }
-})();
 
 
 // ---------------------------------------------------------------------
@@ -208,18 +192,18 @@ const palettes = [
   // --- Bold: dark, high contrast, one loud accent ---
   // [EDIT] Each colorway: id (unique, no spaces) · g (group in the picker) · name · mode/note (shown in the picker) · t (the colors)
   { id: 'midnight-volt',   g: 'bold', name: 'Midnight Volt',   mode: 'Dark',  note: 'Near-black + electric lime',
-    t: T('#0a0e17', '#121826', '#1a2236', '#eef2ff', '#9aa6c4', '#26314a', '#c6ff3d', '#3de0ff', '#0a0e17', 'rgba(0,0,0,.7)') },
+    t: T('#0a0e17', '#121826', '#1a2236', '#eef2ff', '#e3eaf8', '#26314a', '#c6ff3d', '#3de0ff', '#0a0e17', 'rgba(0,0,0,.7)') },
   { id: 'electric-indigo', g: 'bold', name: 'Electric Indigo', mode: 'Dark',  note: 'Deep violet + hot pink',
-    t: T('#0c0a1e', '#14112e', '#1d1940', '#f1efff', '#a7a2d3', '#2c2760', '#8b7bff', '#ff5fb0', '#0c0a1e', 'rgba(0,0,0,.7)') },
+    t: T('#0c0a1e', '#14112e', '#1d1940', '#f1efff', '#e6e3f8', '#2c2760', '#8b7bff', '#ff5fb0', '#0c0a1e', 'rgba(0,0,0,.7)') },
   // OBSIDIAN is the default (see applyCw('obsidian') further down). To change the default, change that name.
   { id: 'obsidian',        g: 'bold', name: 'Obsidian',        mode: 'Dark',  note: 'True black + white',
-    t: T('#000000', '#0a0a0a', '#151515', '#ffffff', '#a3a3a3', '#262626', '#ffffff', '#9aa0a6', '#000000', 'rgba(0,0,0,.8)') },
+    t: T('#000000', '#0a0a0a', '#151515', '#ffffff', '#f2f2f2', '#262626', '#ffffff', '#9aa0a6', '#000000', 'rgba(0,0,0,.8)') },
   // --- Calm: soft, low-glare, professional ---
   { id: 'dusk-plum',       g: 'calm', name: 'Dusk Plum',       mode: 'Dark',  note: 'Muted plum + lavender',
-    t: T('#18141f', '#211c2b', '#2b2438', '#f0eaf7', '#aea3c2', '#3a3150', '#b9a6e8', '#e8a6b9', '#18141f', 'rgba(0,0,0,.6)') },
+    t: T('#18141f', '#211c2b', '#2b2438', '#f0eaf7', '#e7e0f2', '#3a3150', '#b9a6e8', '#e8a6b9', '#18141f', 'rgba(0,0,0,.6)') },
   // To add a new one: copy a whole { ... } block, give it a new id/name, and change the 10 colors.
   { id: 'warm-sand',       g: 'calm', name: 'Warm Sand',       mode: 'Light', note: 'Beige + teal',
-    t: T('#f3ece0', '#fbf8f2', '#ebe2d2', '#2a2622', '#6f6559', '#ddd2c0', '#2d6a6a', '#a8512f', '#fdf9f2', 'rgba(70,45,20,.45)') }
+    t: T('#f3ece0', '#fbf8f2', '#ebe2d2', '#2a2622', '#4f473e', '#ddd2c0', '#2d6a6a', '#a8512f', '#fdf9f2', 'rgba(70,45,20,.45)') }
 ];
 const cwBtn = document.getElementById('cw-btn'), cwPanel = document.getElementById('cw-panel'), cwDots = document.getElementById('cw-dots');
 let cwId = 'obsidian';          // the colorway currently showing
@@ -289,7 +273,7 @@ addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key.toLower
 
 const rvSets = [
   ['.hero-copy > *', 'l', 90], ['.hero .code', 'r', 280],
-  ['main h2', 'l', 0], ['.gh', 'u', 0],
+  ['main h2', 'l', 0],
   ['#about .lead', 'u', 0], ['#about .two > div', 'u', 120],
   ['.edu', 'lr', 120],
   ['#projects > .muted, #filters', 'u', 90],
@@ -302,11 +286,9 @@ const rvIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecti
 function showRv(el) {
   if (!document.body.classList.contains('ready')) { pendingRv.add(el); return; }   // wait until the page has started
   el.classList.add('in', 'seen');
-  if (el.classList.contains('gh')) setTimeout(() => el.classList.add('settled'), 1800);
   const d = parseInt(el.style.getPropertyValue('--d')) || 0;
   setTimeout(() => {                                   // hand control back to normal hover styles
     el.classList.remove('rv', 'big', 'l', 'r', 'u', 'in'); el.style.removeProperty('--d');
-    if (el.matches('.gh')) el.classList.add('tilt');
     if (el.classList.contains('code')) el.classList.add('float');
   }, 950 + d);
 }
@@ -494,18 +476,8 @@ new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:
 endlessLoop();
 
 // ---------------------------------------------------------------------
-// 8 · HOVER TILT + SCROLL FADE
+// 8 · SCROLL FADE
 // ---------------------------------------------------------------------
-
-// GitHub card: spotlight + 3D tilt follow the mouse (desktop only). Tilt = 6° up/down, 8° left/right — raise the numbers for more.
-if (matchMedia('(hover:hover)').matches) document.querySelectorAll('.gh').forEach(el => {
-  el.addEventListener('pointermove', e => {
-    const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-    el.style.setProperty('--px', x * 100 + '%'); el.style.setProperty('--py', y * 100 + '%');
-    if (el.classList.contains('tilt')) { el.style.setProperty('--rx', ((.5 - y) * 6) + 'deg'); el.style.setProperty('--ry', ((x - .5) * 8) + 'deg'); }
-  });
-  el.addEventListener('pointerleave', () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
-});
 
 
 

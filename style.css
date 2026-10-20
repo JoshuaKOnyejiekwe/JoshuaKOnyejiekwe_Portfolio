@@ -1,341 +1,1740 @@
 /* JOSHUA — PORTFOLIO · style.css
    Colors come from the colorway picked in main.js (const palettes). The :root values are only a first-paint fallback.
    Some selectors appear twice: the LATER one wins, so edit the last match.
-   WHAT TO CHANGE → search for this text
-     page width ......... .wrap{max-width        space between sections ... h2{display:flex  (84px)
-     hero height ........ .hero{display:grid     banner fade ............. .hero-bg::after
-     font / text size ... body{margin:0          glow strength ........... --glow:
-     slide speed ........ .rv{opacity            scroll fade ............. .js .fade{opacity
-     emblem size ........ .em{width:80px         project columns ......... .grid{display:grid
-     code-card colors ... .code{background       timeline line ........... .tl::before,.tl::after{left:39px */
+   WHAT TO CHANGE → search for this text (then look for the property named in brackets)
+     page width ......... .wrap {  [max-width]          space between sections ... h2 {  [margin: 84px …]
+     hero height ........ .hero {  [padding-top/bottom] banner fade ............. .hero-bg::after {
+     font / text size ... body {  [font]                glow strength ........... --glow:
+     slide speed ........ .rv {  [transition]           scroll fade ............. .js .fade {
+     emblem size ........ .em {  [width: 80px]          project columns ......... .grid {
+     code-card colors ... .code {  [background]         timeline line ........... .tl::before,  [left: 39px]
+   Tip: a few selectors appear more than once (.em, .code, .tl::before, .tl::after). The LAST match wins. */
+
 
 /* ---- BASE: fallback colors, reset, page width ---- */
-:root{--bg:#000000;--panel:#0a0a0a;--panel2:#151515;--ink:#ffffff;--muted:#a3a3a3;--line:#262626;--accent:#ffffff;--accent2:#9aa0a6;--on-accent:#000000;--shadow:rgba(0,0,0,.8);   /* first-paint fallback only; the real colors come from main.js (const palettes) */
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*,*::before,*::after{box-sizing:inherit}
-html{scroll-behavior:smooth;scroll-padding-top:110px}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.65 'Inter',system-ui,sans-serif;overflow-x:clip;transition:background .3s,color .3s}   /* base font and text size */
-a{color:inherit;text-decoration:none}
-h1,h2,h3,p,ul,figure{margin:0}
-.wrap{max-width:1000px;margin:0 auto;padding:0 24px}   /* page content width */
-.muted{color:var(--muted)}
+/* Theme variables used everywhere (--bg page, --panel cards, --ink text, --muted gray text, --line borders, --accent highlight). First-paint fallback only: main.js overwrites them with the chosen colorway. Also pads the page for phone notches. */
+:root {
+  --bg: #000000;
+  --panel: #0a0a0a;
+  --panel2: #151515;
+  --ink: #ffffff;
+  --muted: #f2f2f2;
+  --line: #262626;
+  --accent: #ffffff;
+  --accent2: #9aa0a6;
+  --on-accent: #000000;
+  --shadow: rgba(0, 0, 0, .8);   /* first-paint fallback only; the real colors come from main.js (const palettes) */
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Reset: padding and borders count inside an element's width so boxes don't overflow. */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Smooth scrolling for nav jumps. scroll-padding-top keeps section titles from hiding under the sticky header. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+/* Page background, text color, default font, size and line spacing. Also stops sideways scrolling. */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 .4rem/1.5 'Inter', system-ui, sans-serif;
+  overflow-x: clip;
+  transition: background .3s, color .3s;
+}   /* base font and text size */
+
+/* Links take the color of their surroundings and have no underline. */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Removes the browser's default margins so spacing is controlled by the rules below. */
+h1,
+h2,
+h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+/* Centered content column. max-width = page width, padding = left/right gutters. */
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}   /* page content width */
+
+/* Soft gray text for secondary information. Education card font size */
+.muted {
+  color: var(--muted);
+  font-size: 1.38rem; /* [Size] Want to connect about projects, internships, or tech roles? Reach out.*/
+}
 
 
 
 /* ===== HEADER — sticky bar. Size/spacing here; text in index.html; lit tab = #nav a.active ===== */
-.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}   /* header bar: blur + bottom border */
-.top-in{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
-.brand{display:flex;align-items:center;gap:12px}
-.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;overflow:hidden;font-weight:700;color:var(--on-accent);background:linear-gradient(145deg,var(--accent),var(--accent2))}
-.av img{width:100%;height:100%;object-fit:cover}
-.who{display:flex;flex-direction:column;line-height:1.2}
-.who b{font-size:1rem}.who small{font-size:.76rem;color:var(--muted)}
-#nav{display:flex;gap:2px;margin-left:auto}
-#nav a{padding:7px 12px;border-radius:9px;font-size:.86rem;font-weight:500;color:var(--muted);white-space:nowrap;transition:.2s}   /* tab size: padding / font-size */
-#nav a:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent)}   /* hover = soft highlight; the pressed/current tab uses .active below */
-#nav a.active{background:var(--ink);color:var(--bg)}   /* lit (current or pressed) tab */
-@media(max-width:940px){#nav{order:3;width:100%;margin:0;overflow-x:auto;scrollbar-width:none}}
+/* The sticky header bar: stays at the top, frosted-glass background, thin bottom border. */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}   /* header bar: blur + bottom border */
+
+/* Inside the header: lays out logo, tabs and search button in one row (wraps on small screens). */
+.top-in {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Header logo + name group. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Small square avatar in the header (shows a letter, or the photo if one loads). */
+.av {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-weight: 700;
+  color: var(--on-accent);
+  background: linear-gradient(145deg, var(--accent), var(--accent2));
+}
+
+/* Makes a header photo fill the avatar square without stretching. */
+.av img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Name + title text stacked in the header. */
+.who {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+/* Name line (bold). */
+.who b {
+  font-size: 1rem;
+}
+
+/* Small gray subtitle under the name. */
+.who small {
+  font-size: .76rem;
+  color: var(--muted);
+}
+
+/* Row of nav tabs, pushed to the right side of the header. */
+#nav {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+/* Each nav tab's size, shape and gray text. */
+#nav a {
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: .86rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: .2s;
+}   /* tab size: padding / font-size */
+
+/* Tab hover: text brightens with a soft background. */
+#nav a:hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}   /* hover = soft highlight; the pressed/current tab uses .active below */
+
+/* The lit tab for the current section (solid color). */
+#nav a.active {
+  background: var(--ink);
+  color: var(--bg);
+}   /* lit (current or pressed) tab */
+
+/* On tablets and phones the tabs drop to their own full-width, scrollable row. */
+@media (max-width: 940px) {
+  #nav {
+    order: 3;
+    width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
 
 
 
 /* ===== HERO — .hero = text left + code card right (2 columns from 820px). Banner behind it: see HERO BANNER ===== */
-.hero{display:grid;gap:40px;align-items:center;padding-top:84px;padding-bottom:84px;position:relative}   /* gap = space between text and code card · padding-top/bottom = hero height */
-@media(min-width:820px){.hero{grid-template-columns:1.2fr 1fr}}
-.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-h1{font-size:clamp(2.3rem,6vw,3.6rem);font-weight:700;letter-spacing:-.035em;line-height:1.08}   /* headline size: clamp(smallest, fluid, largest) */
-.sub{margin:18px 0 26px;color:var(--muted);max-width:48ch;font-size:1.05rem}   /* paragraph under the headline */
-.cta{display:flex;gap:12px;flex-wrap:wrap}
-.btn{display:inline-block;padding:10px 22px;border:1px solid var(--ink);border-radius:10px;font-weight:600;font-size:.9rem;transition:.2s;background:transparent;color:var(--ink);cursor:pointer;font-family:inherit}   /* button shape */
-.btn:hover{background:var(--ink);color:var(--bg)}
-.btn.dark{background:var(--ink);color:var(--bg)}
-.btn.dark:hover{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.social{display:flex;gap:18px;margin-top:22px;font-size:.9rem;font-weight:500}
-.social a{color:var(--muted);border-bottom:1px solid var(--line);transition:.2s}
-.social a:hover{color:var(--accent);border-color:var(--accent)}
-.ph,.m-img{display:grid;place-items:center;background:linear-gradient(135deg,#d9c8ae,#bccfc6);color:rgba(42,38,34,.45);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden}
-.ph img,.m-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Hero section layout: text and code card side by side. gap = space between them, padding = hero height. */
+.hero {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+  padding-top: 84px;
+  padding-bottom: 84px;
+  position: relative;
+}   /* gap = space between text and code card · padding-top/bottom = hero height */
+
+/* From 820px wide, split the hero into two columns (text wider than the code card). */
+@media (min-width: 820px) {
+  .hero {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+/* Small uppercase label above the headline. */
+.eyebrow {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+/* Main headline. clamp(min, fluid, max) controls how its size scales with screen width. */
+h1 {
+  font-size: clamp(2.3rem, 6vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}   /* headline size: clamp(smallest, fluid, largest) */
+
+/* Paragraph under the headline. */
+.sub {
+  margin: 18px 0 26px;
+  color: var(--muted);
+  max-width: 48ch;
+  font-size: 1.05rem;
+}   /* paragraph under the headline */
+
+/* Row that holds the hero buttons. */
+.cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Outlined button: shape, padding, border and text. */
+.btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: .9rem;
+  transition: .2s;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: inherit;
+}   /* button shape */
+
+/* Outlined button hover: fills with the text color. */
+.btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Solid (filled) button style, e.g. View Projects. */
+.btn.dark {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Solid button hover: switches to the accent color. */
+.btn.dark:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Row of social links under the buttons. */
+.social {
+  display: flex;
+  gap: 18px;
+  margin-top: 22px;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+/* Social link style: gray with a thin underline. */
+.social a {
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  transition: .2s;
+}
+
+/* Social link hover: accent color. */
+.social a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Image placeholder boxes (gallery, project images, popup image): gradient fill, centered label. */
+.ph,
+.m-img {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #d9c8ae, #bccfc6);
+  color: rgba(42, 38, 34, .45);
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Real images fill their placeholder box and are cropped to fit. */
+.ph img,
+.m-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 
 
 /* ===== SECTIONS — h2 = section titles (with the line after them) · .chips = tag pills ===== */
-section.wrap{padding-top:10px;padding-bottom:10px}
-h2{display:flex;align-items:center;gap:14px;margin:84px 0 22px;font-size:.8rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase}   /* section title · margin-top 84px = space between sections */
-h2::after{content:"";flex:1;height:1px;background:var(--line)}
-h3{font-size:1.05rem;font-weight:600}
-.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin-bottom:26px}   /* big intro paragraph (About) */
-.two,.three{display:grid;gap:26px}
-@media(min-width:700px){.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}}
-.two h3,.three h3{margin-bottom:10px}
-ul{padding-left:18px;color:var(--muted)}
-li{margin:4px 0}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips span,.tags-i{font-size:.78rem;font-weight:500;padding:4px 12px;border-radius:99px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}   /* tag pills (skills, project tech) */
-.tags{font-size:.8rem;font-weight:600;color:var(--accent);margin-top:8px}
-.org{color:var(--accent2);font-weight:500;font-size:.92rem}
+/* Each page section's top/bottom padding. */
+section.wrap {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Section titles (About, Education…): large uppercase text. font-size = clamp(smallest, fluid, largest). margin-top = space between sections. */
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 84px 0 26px;
+  font-size: clamp(1.75rem, 4vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}   /* section title · margin-top 84px = space between sections */
+
+/* The thin line that runs after each section title. */
+h2::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--line);
+}
+
+/* Sub-headings (card and column titles). Change font-size to resize them. */
+h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* Big intro paragraph in About. */
+.lead {
+  font-size: 1.8rem;
+  color: var(--muted);
+  max-width: 60ch;
+  margin-bottom: 26px;
+}   /* big intro paragraph (About) */
+
+/* Two- and three-column content grids (About, Skills, Awards). */
+.two,
+.three {
+  display: grid;
+  gap: 26px;
+}
+
+/* From 700px wide, actually split into 2 / 3 columns (stacked on phones). */
+@media (min-width: 700px) {
+  .two {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Space under headings inside the column grids. */
+.two h3,
+.three h3 {
+  margin-bottom: 10px;
+}
+
+/* Bullet lists: indent and gray text. Experince bullet size */
+ul {
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 1.56rem; /**/
+}
+
+/* Space between list items. */
+li {
+  margin: 6px 0;
+}
+
+/* Row of small tag pills that wraps onto new lines. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Tag pill look (skills, project tech): small rounded capsule in a tinted accent color. */
+.chips span,
+.tags-i {
+  font-size: .95rem; /* Tag size */
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}   /* tag pills (skills, project tech) */
+
+/* Accent-colored tech line under a title. */
+.tags {
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 8px;
+}
+
+/* Organization / school name color and size. */
+.org {
+  color: var(--accent2);
+  font-weight: 500;
+  font-size: 1.05rem;
+}
 
 
 
 /* ===== EMBLEMS, first pass — final size + look: "EMBLEMS (final)" and "EMBLEM HOVER" near the bottom ===== */
-.em{position:relative;isolation:isolate;width:72px;height:72px;border-radius:18px;flex:none}
-.em::before{content:"";position:absolute;inset:0;border-radius:18px;background:#111;opacity:0;transition:transform .3s,opacity .3s}
-.logo{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;display:grid;place-items:center;font-weight:700;font-size:.95rem;color:var(--on-accent);background:linear-gradient(145deg,var(--accent),var(--accent2));border:3px solid var(--panel);box-shadow:0 0 0 1px var(--line);transition:transform .3s}
-.logo:empty::before{content:attr(data-initials)}
-.logo img{width:100%;height:100%;object-fit:cover}
-.edu:hover .em::before,.job:hover .em::before{opacity:1;transform:translate(8px,8px)}
-.edu:hover .logo,.job:hover .logo{transform:translate(-2px,-2px)}
+/* Emblem (logo tile) first-pass size and shape. Final size is set in EMBLEMS (final) near the bottom. */
+.em {
+  position: relative;
+  isolation: isolate;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  flex: none;
+}
+
+/* Hidden backing layer behind an emblem, used for its hover glow. */
+.em::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: #111;
+  opacity: 0;
+  transition: transform .3s, opacity .3s;
+}
+
+/* The logo tile itself: gradient fill, centered initials, border, shadow. */
+.logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--on-accent);
+  background: linear-gradient(145deg, var(--accent), var(--accent2));
+  border: 3px solid var(--panel);
+  box-shadow: 0 0 0 1px var(--line);
+  transition: transform .3s;
+}
+
+/* If no image is inside the logo, show its initials (from data-initials). */
+.logo:empty::before {
+  content: attr(data-initials);
+}
+
+/* Logo image fills the tile. */
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* First-pass hover: the backing layer fades in and shifts. */
+.edu:hover .em::before,
+.job:hover .em::before {
+  opacity: 1;
+  transform: translate(8px, 8px);
+}
+
+/* First-pass hover: the logo nudges up-left. */
+.edu:hover .logo,
+.job:hover .logo {
+  transform: translate(-2px, -2px);
+}
 
 
 
 /* ===== EDUCATION — .cards = grid (2 columns) · .edu = one card ===== */
-.cards{display:grid;gap:18px}   /* education grid (2 columns from 700px) */
-@media(min-width:700px){.cards{grid-template-columns:1fr 1fr}}
-.edu{display:flex;gap:18px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}
+/* Education cards grid. */
+.cards {
+  display: grid;
+  gap: 18px;
+}   /* education grid (2 columns from 700px) */
+
+/* From 700px wide, show education cards in 2 columns. */
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* One education card: logo + text, rounded panel with a border. */
+.edu {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+}
 
 
 
 /* ===== EXPERIENCE TIMELINE — .tl list · gray line = ::before · colored line = ::after (fills on scroll) · .job = entry ===== */
-.tl{position:relative;display:grid;gap:34px;--p:0}   /* timeline list · gap = space between entries */
-.tl::before,.tl::after{content:"";position:absolute;left:35px;top:36px;width:2px;border-radius:2px}
-.tl::before{bottom:36px;background:var(--line)}
-.tl::after{height:calc((100% - 72px) * var(--p));background:var(--accent)}
-.job{position:relative;display:grid;grid-template-columns:72px 1fr;gap:22px}
-.jb{padding-top:4px}
-.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
-.date{font-size:.82rem;color:var(--muted)}
-.jb ul{margin-top:8px}
+/* Experience timeline container. gap = space between jobs. --p = how far the colored line is filled (set by main.js on scroll). */
+.tl {
+  position: relative;
+  display: grid;
+  gap: 34px;
+  --p: 0;
+}   /* timeline list · gap = space between entries */
+
+/* The vertical timeline line (gray ::before track, colored ::after fill) — shared position. */
+.tl::before,
+.tl::after {
+  content: "";
+  position: absolute;
+  left: 35px;
+  top: 36px;
+  width: 2px;
+  border-radius: 2px;
+}
+
+/* Gray track: the full-length background line. */
+.tl::before {
+  bottom: 36px;
+  background: var(--line);
+}
+
+/* Colored line: its height grows as you scroll. */
+.tl::after {
+  height: calc((100% - 72px) * var(--p));
+  background: var(--accent);
+}
+
+/* One job entry: logo column on the left, text on the right. */
+.job {
+  position: relative;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 22px;
+}
+
+/* Job text column: small top padding to align with the logo. */
+.jb {
+  padding-top: 4px;
+}
+
+/* Job title row: title on the left, date on the right (wraps on small screens). */
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+/* Date text: small and gray. */
+.date {
+  font-size: .95rem;
+  color: var(--muted);
+}
+
+/* Space above the job's bullet list. */
+.jb ul {
+  margin-top: 8px;
+}
 
 
 
 /* ===== PROJECTS — filters + cards (cards are built by main.js) · .grid = 1 / 2 / 3 columns by screen width ===== */
-.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 22px}
-.filters button{font:500 .84rem 'Inter';padding:7px 16px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:.2s}
-.filters button:hover{color:var(--ink);border-color:var(--ink)}
-.filters button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.grid{display:grid;gap:20px}   /* project cards · gap = spacing · columns come from the media queries just below (1 / 2 / 3) */
-@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
-@media(min-width:940px){.grid{grid-template-columns:repeat(3,1fr)}}
-.pc{cursor:pointer;display:block;outline:none;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s}
-.pc:hover,.pc:focus-visible{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 20px 36px -26px var(--shadow)}
-.pc .ph{aspect-ratio:16/10}
-.pc-b{padding:16px 18px 18px}
-.tag{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
-.pc h3{margin:4px 0 4px}
-.pc p.d{font-size:.88rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.pc .chips{margin-top:12px}
+/* Row of project filter buttons. */
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px 0 22px;
+}
+
+/* Filter button: pill shape, border, gray text. */
+.filters button {
+  font: 500 .95rem 'Inter';
+  padding: 7px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  transition: .2s;
+}
+
+/* Filter button hover. */
+.filters button:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* Active (selected) filter button. */
+.filters button.on {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+/* Project cards grid. gap = spacing between cards. Column counts come from the two media queries below. */
+.grid {
+  display: grid;
+  gap: 20px;
+}   /* project cards · gap = spacing · columns come from the media queries just below (1 / 2 / 3) */
+
+/* From 640px wide: 2 project columns. */
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* From 940px wide: 3 project columns. */
+@media (min-width: 940px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* A project card: panel, border, rounded corners, clickable. */
+.pc {
+  cursor: pointer;
+  display: block;
+  outline: none;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: .25s;
+}
+
+/* Project card hover/keyboard focus: lifts up and the border turns accent. */
+.pc:hover,
+.pc:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 36px -26px var(--shadow);
+}
+
+/* Card image area: fixed 16:10 shape. */
+.pc .ph {
+  aspect-ratio: 16/10;
+}
+
+/* Card text area padding. */
+.pc-b {
+  padding: 16px 18px 18px;
+}
+
+/* Small uppercase category label on a card. */
+.tag {
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+}
+
+/* Card title spacing. */
+.pc h3 {
+  margin: 4px 0 4px;
+  font-size: 1.2rem;
+}
+
+/* Card description, cut off after 3 lines (change the 3 in -webkit-line-clamp for more/fewer). */
+.pc p.d {
+  font-size: 1rem;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Space above the tech pills on a card. */
+.pc .chips {
+  margin-top: 12px;
+}
 
 
 
 /* ===== GALLERY + CONTACT + FOOTER ===== */
-.gal{display:grid;gap:18px;margin-top:18px}   /* gallery grid (3 columns from 640px) */
-@media(min-width:640px){.gal{grid-template-columns:repeat(3,1fr)}}
-.gal .ph{aspect-ratio:4/3;border-radius:16px;transition:transform .3s}
-.gal figure:hover .ph{transform:translateY(-4px)}
-figcaption{font-size:.84rem;color:var(--muted);margin-top:8px}
-.links{margin-top:18px}
-.links a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;font-weight:600;font-size:.95rem;word-break:break-word;transition:.25s}
-.links a:hover{border-color:var(--accent);transform:translateY(-3px)}
-.links small{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-weight:600}
-footer{display:flex;justify-content:center;margin-top:90px;padding-top:22px;padding-bottom:50px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted)}   /* footer: just the Back-to-top link */
-footer a:hover{color:var(--accent)}
+/* Gallery grid and its spacing. */
+.gal {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}   /* gallery grid (3 columns from 640px) */
+
+/* From 640px wide: 3 gallery columns. */
+@media (min-width: 640px) {
+  .gal {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Gallery image boxes: 4:3 shape, rounded, ready to lift on hover. */
+.gal .ph {
+  aspect-ratio: 4/3;
+  border-radius: 16px;
+  transition: transform .3s;
+}
+
+/* Gallery image lifts slightly on hover. */
+.gal figure:hover .ph {
+  transform: translateY(-4px);
+}
+
+/* Gallery caption text. */
+figcaption {
+  font-size: .95rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* Contact links block spacing. */
+.links {
+  margin-top: 18px;
+}
+
+/* Each contact link as a bordered panel. */
+.links a {
+  display: flex;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  word-break: break-word;
+  transition: .25s;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Contact link hover: accent border and lift. */
+.links a:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+/* Small uppercase label above each contact link. */
+.links small {
+  display: block;
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* Contact icon tile: a rounded brand-colored square that holds the logo (email = red, GitHub = dark, LinkedIn = blue). Change width/height to resize. */
+.ci {
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: #fff;
+}
+
+/* Size of the logo drawing inside the tile. */
+.ci svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Brand colors for each tile. [EDIT] any hex code to recolor. GitHub gets a thin light edge so it shows on dark pages. */
+.ci-mail { background: #ea4335; }
+.ci-gh { background: #24292f; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
+.ci-in { background: #0a66c2; }
+
+/* Text next to the icon (small label + the address or name). min-width: 0 lets long emails wrap instead of overflowing. */
+.ct {
+  min-width: 0;
+}
+
+/* "Don't use Gmail?" line under the contact cards. */
+.links-alt {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.links-alt a {
+  color: var(--accent);
+  border-bottom: 1px solid currentColor;
+}
+
+/* Footer: centered Back-to-top link with a top border. */
+footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+  padding-top: 22px;
+  padding-bottom: 50px;
+  border-top: 1px solid var(--line);
+  font-size: .84rem;
+  color: var(--muted);
+}   /* footer: just the Back-to-top link */
+
+/* Footer link hover color. */
+footer a:hover {
+  color: var(--accent);
+}
 
 
 
 /* ===== PROJECT POPUP — the window opened by clicking a card ===== */
-dialog{border:0;padding:0;border-radius:22px;width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow:auto;background:var(--panel);color:var(--ink);box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}   /* popup width: min(560px, …) */
-dialog::backdrop{background:rgba(20,15,10,.55);backdrop-filter:blur(3px)}
-.x{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:0;background:var(--panel);color:var(--ink);font-size:1.3rem;line-height:1;cursor:pointer}
-.m-img{aspect-ratio:16/8}
-.m-body{padding:22px 26px 26px}
-.m-body h3{font-size:1.4rem;margin:4px 0 2px}
-.m-body>p{margin-top:12px}
-.m-body .chips{margin-top:14px}.m-body .cta{margin-top:18px}
+/* Project popup window: width, rounded corners, scrolls if tall. */
+dialog {
+  border: 0;
+  padding: 0;
+  border-radius: 22px;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .6);
+}   /* popup width: min(560px, …) */
+
+/* Dark blurred screen behind the popup and the search palette. */
+dialog::backdrop {
+  background: rgba(20, 15, 10, .55);
+  backdrop-filter: blur(3px);
+}
+
+/* The round close (×) button in the popup's corner. */
+.x {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Popup image area: wide 16:8 shape. */
+.m-img {
+  aspect-ratio: 16/8;
+}
+
+/* Popup text area padding. */
+.m-body {
+  padding: 22px 26px 26px;
+}
+
+/* Popup project title. */
+.m-body h3 {
+  font-size: 1.4rem;
+  margin: 4px 0 2px;
+}
+
+/* Space above the popup description. */
+.m-body > p {
+  margin-top: 12px;
+}
+
+/* Space above the popup's tech pills. */
+.m-body .chips {
+  margin-top: 14px;
+}
+
+/* Space above the popup's buttons. */
+.m-body .cta {
+  margin-top: 18px;
+}
 
 
 
 /* ===== SCROLL PROGRESS BAR + SEARCH BUTTON ===== */
-#progress{position:fixed;top:0;left:0;width:100%;height:3px;z-index:200;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-kbd{font:600 .7rem 'Inter',sans-serif;padding:2px 6px;border-radius:6px;background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
-.kbd-btn{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--muted);font:500 .8rem 'Inter',sans-serif;cursor:pointer}
-.kbd-btn:hover{border-color:var(--accent);color:var(--ink)}
-@media(hover:none){.kbd-btn kbd{display:none}}
-@media(max-width:940px){.kbd-btn{margin-left:auto}}
+/* Thin scroll-progress bar fixed at the very top; its width is set by main.js as you scroll. */
+#progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 200;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* Keyboard-key badge style (the K in Ctrl K). */
+kbd {
+  font: 600 .7rem 'Inter', sans-serif;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+/* The search button in the header (opens the Ctrl/⌘ + K palette). */
+.kbd-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--muted);
+  font: 500 .8rem 'Inter', sans-serif;
+  cursor: pointer;
+}
+
+/* Search button hover. */
+.kbd-btn:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+/* On touch devices (no hover) hide the keyboard-key badge. */
+@media (hover: none) {
+  .kbd-btn kbd {
+    display: none;
+  }
+}
+
+/* On small screens push the search button to the right. */
+@media (max-width: 940px) {
+  .kbd-btn {
+    margin-left: auto;
+  }
+}
 
 
 
 /* ===== CODE CARD — frame, syntax colors (.c comment · .k keyword · .s string · .b number), cursor. Behavior: main.js §7 ===== */
-.code{background:#1d1a16;color:#f1e9dc;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -34px var(--shadow);border:1px solid #3a3228}   /* code-card colors are fixed dark (they don't follow the colorway) */
-.code-bar{display:flex;align-items:center;gap:7px;padding:12px 16px;background:#26211b;border-bottom:1px solid #3a3228}
-.code-bar i{width:11px;height:11px;border-radius:50%;background:#4a4036}
-.code-bar i:nth-child(1){background:#e29a76}.code-bar i:nth-child(2){background:#e0bb6a}.code-bar i:nth-child(3){background:#86c9bf}
-.code-bar span{margin-left:10px;font:500 .78rem 'Inter';color:#a89d8a}
-.code pre{margin:0;padding:20px 22px;overflow-x:auto;font:500 .86rem/1.8 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}   /* code text: font size / line height */
-.code .c{color:#8a8174}.code .k{color:#e29a76}.code .s{color:#86c9bf}.code .b{color:#e0bb6a}.code .v{color:#f1e9dc}
-.cur{display:inline-block;width:8px;height:1.1em;background:#86c9bf;vertical-align:text-bottom;margin-left:3px;animation:blink 1.1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
+/* Code card frame: dark box with rounded corners. Fixed dark colors that don't follow the colorway. */
+.code {
+  background: #1d1a16;
+  color: #f1e9dc;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -34px var(--shadow);
+  border: 1px solid #3a3228;
+}   /* code-card colors are fixed dark (they don't follow the colorway) */
 
+/* Code card title bar (the three dots, file name, status). */
+.code-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  background: #26211b;
+  border-bottom: 1px solid #3a3228;
+}
 
+/* The three window dots: shared size and shape. */
+.code-bar i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #4a4036;
+}
 
-/* ===== GITHUB CARD, base — its full-width layout is set again in "GITHUB FEATURE CARD" ===== */
-.band{display:grid;gap:20px;margin-top:30px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
-.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
-.card-h h3{margin-top:2px}
-.note{font-size:.78rem;color:var(--muted);margin-top:12px}
-.chip-link{font-size:.82rem;font-weight:600;color:var(--accent)}
-.chip-link:hover{text-decoration:underline}
-.ghs{display:flex;gap:30px;margin:16px 0 14px}
-.ghs b{display:block;font-size:1.6rem;letter-spacing:-.02em;line-height:1.1}
-.ghs small{color:var(--muted);font-size:.76rem}
-.heat{display:grid;grid-template-columns:repeat(26,1fr);gap:3px}
-.heat i{aspect-ratio:1;border-radius:2px;background:var(--panel2)}
-.heat .l1{background:color-mix(in srgb,var(--accent) 28%,var(--panel2))}.heat .l2{background:color-mix(in srgb,var(--accent) 52%,var(--panel2))}
-.heat .l3{background:color-mix(in srgb,var(--accent) 76%,var(--panel2))}.heat .l4{background:var(--accent)}
+/* First dot color. */
+.code-bar i:nth-child(1) {
+  background: #e29a76;
+}
+
+/* Second dot color. */
+.code-bar i:nth-child(2) {
+  background: #e0bb6a;
+}
+
+/* Third dot color. */
+.code-bar i:nth-child(3) {
+  background: #86c9bf;
+}
+
+/* File name text in the title bar. */
+.code-bar span {
+  margin-left: 10px;
+  font: 500 .78rem 'Inter';
+  color: #cfc6b6;
+}
+
+/* The code area: padding and monospace font. Size and line height set here. */
+.code pre {
+  margin: 0;
+  padding: 20px 22px;
+  overflow-x: auto;
+  font: 500 .86rem/1.8 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}   /* code text: font size / line height */
+
+/* Syntax colors: .c comment, .k keyword, .s string, .b number, .v plain text. */
+.code .c {
+  color: #b8ae9d;
+}
+
+.code .k {
+  color: #e29a76;
+}
+
+.code .s {
+  color: #86c9bf;
+}
+
+.code .b {
+  color: #e0bb6a;
+}
+
+.code .v {
+  color: #f1e9dc;
+}
+
+/* The blinking typing cursor. */
+.cur {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: #86c9bf;
+  vertical-align: text-bottom;
+  margin-left: 3px;
+  animation: blink 1.1s steps(1) infinite;
+}
+
+/* Blink animation: fades out halfway through each cycle. Used by the cursor and status dots. */
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
 
 
 
 /* ===== PROJECT CARD links (Repo ↗ / Live ↗) ===== */
-.pc:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.qa{display:flex;gap:16px;margin-top:12px;font-size:.82rem;font-weight:600}
-.qa a{color:var(--accent)}.qa a:hover{text-decoration:underline}
+/* Keyboard-focus outline for project cards. */
+.pc:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Row of Repo / Live links on a card. */
+.qa {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+/* Repo / Live link color. */
+.qa a {
+  color: var(--accent);
+}
+
+/* Repo / Live link hover underline. */
+.qa a:hover {
+  text-decoration: underline;
+}
 
 
 
 /* ===== COMMAND PALETTE (Ctrl/⌘ + K) + TOAST ===== */
-#palette{margin:12vh auto auto;width:min(560px,calc(100vw - 32px));padding:0;overflow:hidden}
-#pin{width:100%;border:0;border-bottom:1px solid var(--line);padding:18px 20px;font:500 1rem 'Inter',sans-serif;background:transparent;color:var(--ink);outline:none}
-#plist{list-style:none;margin:0;padding:8px;max-height:46vh;overflow:auto}
-#plist li{margin:0;padding:10px 12px;border-radius:10px;display:flex;justify-content:space-between;gap:12px;cursor:pointer;font-size:.92rem;color:var(--ink)}
-#plist li small{opacity:.55;font-size:.76rem;white-space:nowrap}
-#plist li.sel{background:var(--ink);color:var(--bg)}
-#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:.3s;z-index:300}
-#toast.on{opacity:1;transform:translate(-50%,0)}
-footer{flex-wrap:wrap;gap:10px}
+/* Search palette (Ctrl/⌘ + K) window size and position. */
+#palette {
+  margin: 12vh auto auto;
+  width: min(560px, calc(100vw - 32px));
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Palette search input. */
+#pin {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 18px 20px;
+  font: 500 1rem 'Inter', sans-serif;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+}
+
+/* Palette results list. */
+#plist {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  max-height: 46vh;
+  overflow: auto;
+}
+
+/* One palette result row. */
+#plist li {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  font-size: .92rem;
+  color: var(--ink);
+}
+
+/* Small gray label at the right of a result (e.g. Link, Section). */
+#plist li small {
+  opacity: .55;
+  font-size: .76rem;
+  white-space: nowrap;
+}
+
+/* The highlighted (selected) result. */
+#plist li.sel {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Toast: small message that pops up at the bottom (e.g. Email copied). Hidden until .on is added. */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transform: translate(-50%, 16px);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: .88rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: .3s;
+  z-index: 300;
+}
+
+/* Toast visible state: fades and slides up. */
+#toast.on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Lets footer items wrap and sets their spacing. */
+footer {
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
 
 
 /* ===== COLORWAY PICKER — bottom-left button + panel. The colors live in main.js §4 ===== */
-:root,body,.card,.pc,.edu,.links a,#nav a,.top{transition:background-color .35s,color .35s,border-color .35s}
-#cw-btn{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:150;display:flex;align-items:center;gap:10px;padding:9px 14px 9px 10px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:600 .82rem 'Inter',sans-serif;cursor:pointer;box-shadow:0 14px 30px -16px var(--shadow)}   /* colorway button position */
-#cw-btn:hover{border-color:var(--accent)}
-.dots{display:flex}
-.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--panel);margin-right:-5px}
-.dots i:last-child{margin-right:6px}
-#cw-panel{position:fixed;left:16px;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:150;width:min(340px,calc(100vw - 32px));max-height:min(72vh,640px);overflow:auto;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 30px 60px -24px var(--shadow)}   /* colorway panel size + position */
-#cw-panel[hidden]{display:none}
-#cw-panel h4{margin:6px 0 2px;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2)}
-.cw-note{margin:0 0 10px;font-size:.8rem;color:var(--muted)}
-.cw{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;padding:9px 10px;border-radius:12px;cursor:pointer;border:1px solid transparent}
-.cw:hover{background:var(--panel2)}
-.cw:focus-visible{outline:2px solid var(--accent)}
-.cw.on{border-color:var(--accent);background:var(--panel2)}
-.sw{display:flex;border-radius:9px;overflow:hidden;border:1px solid var(--line);flex:none}
-.sw i{width:18px;height:30px}
-.cn b{display:block;font-size:.9rem}
-.cn small{color:var(--muted);font-size:.74rem}
-.cw-sep{height:1px;background:var(--line);margin:14px 0 10px}
+/* Smooth color fade when you switch colorways. */
+:root,
+body,
+.pc,
+.edu,
+.links a,
+#nav a,
+.top {
+  transition: background-color .35s, color .35s, border-color .35s;
+}
+
+/* Colorway button (bottom-left): pill with the color dots and label. left/bottom = its position. */
+#cw-btn {
+  position: fixed;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px 9px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--ink);
+  font: 600 .82rem 'Inter', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 14px 30px -16px var(--shadow);
+}   /* colorway button position */
+
+/* Colorway button hover. */
+#cw-btn:hover {
+  border-color: var(--accent);
+}
+
+/* Row of overlapping color dots on the button. */
+.dots {
+  display: flex;
+}
+
+/* One color dot. */
+.dots i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--panel);
+  margin-right: -5px;
+}
+
+/* Last dot: space before the label. */
+.dots i:last-child {
+  margin-right: 6px;
+}
+
+/* Colorway panel that opens above the button: width, scroll, border, shadow. */
+#cw-panel {
+  position: fixed;
+  left: 16px;
+  bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+  z-index: 150;
+  width: min(340px, calc(100vw - 32px));
+  max-height: min(72vh, 640px);
+  overflow: auto;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 30px 60px -24px var(--shadow);
+}   /* colorway panel size + position */
+
+/* Keeps the panel hidden until opened. */
+#cw-panel[hidden] {
+  display: none;
+}
+
+/* Group titles in the panel (Bold, Calm). */
+#cw-panel h4 {
+  margin: 6px 0 2px;
+  font-size: .78rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+}
+
+/* Short description under each group title. */
+.cw-note {
+  margin: 0 0 10px;
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+/* One colorway option row (reset first, then styled as a flex row). */
+.cw {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+/* Option hover. */
+.cw:hover {
+  background: var(--panel2);
+}
+
+/* Keyboard-focus outline for an option. */
+.cw:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+/* Currently selected colorway option. */
+.cw.on {
+  border-color: var(--accent);
+  background: var(--panel2);
+}
+
+/* The mini color swatch strip in each option. */
+.sw {
+  display: flex;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  flex: none;
+}
+
+/* One swatch stripe size. */
+.sw i {
+  width: 18px;
+  height: 30px;
+}
+
+/* Colorway name. */
+.cn b {
+  display: block;
+  font-size: .9rem;
+}
+
+/* Colorway description (mode · note). */
+.cn small {
+  color: var(--muted);
+  font-size: .74rem;
+}
+
+/* Divider between groups. */
+.cw-sep {
+  height: 1px;
+  background: var(--line);
+  margin: 14px 0 10px;
+}
 
 
 
 /* ===== HERO BANNER — .hero-bg gradient (add a photo in index.html) · ::after = fade that keeps text readable ===== */
-.hero-wrap{position:relative;overflow:hidden;isolation:isolate;border-bottom:1px solid var(--line)}   /* hero container; the banner sits behind the text */
-.hero-bg{position:absolute;inset:0;z-index:-1;display:grid;place-items:end center;   /* banner background (a gradient from the colorway until you add a photo) */
-  background:radial-gradient(620px 340px at 86% 18%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 70%),
-             radial-gradient(540px 320px at 68% 100%,color-mix(in srgb,var(--accent2) 34%,transparent),transparent 70%),
-             linear-gradient(135deg,var(--panel2),var(--panel))}
-.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.hero-bg::after{content:"";position:absolute;inset:0;   /* left fade over the banner: raise the 80% to hide more of the photo */
-  background:linear-gradient(90deg,var(--bg) 6%,color-mix(in srgb,var(--bg) 80%,transparent) 46%,color-mix(in srgb,var(--bg) 22%,transparent) 100%),linear-gradient(transparent 72%,var(--bg))}
-.btn.dark:hover{filter:brightness(.92)}
-@media(max-width:819px){.hero{padding-top:60px;padding-bottom:60px}}
+/* Hero container: holds the banner behind the text and clips it. */
+.hero-wrap {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-bottom: 1px solid var(--line);
+}   /* hero container; the banner sits behind the text */
+
+/* Banner background: soft colored glows from the colorway. A photo would sit on top of it. */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  place-items: end center;   /* banner background (a gradient from the colorway until you add a photo) */
+  background:
+    radial-gradient(620px 340px at 86% 18%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 70%),
+    radial-gradient(540px 320px at 68% 100%, color-mix(in srgb, var(--accent2) 34%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--panel2), var(--panel));
+}
+
+/* A banner photo fills the area. */
+.hero-bg img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Fade over the banner so the text stays readable. Raise the 80% to hide more of the photo. */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;   /* left fade over the banner: raise the 80% to hide more of the photo */
+  background:
+    linear-gradient(90deg, var(--bg) 6%, color-mix(in srgb, var(--bg) 80%, transparent) 46%, color-mix(in srgb, var(--bg) 22%, transparent) 100%),
+    linear-gradient(transparent 72%, var(--bg));
+}
+
+/* Solid button hover: slightly darker. */
+.btn.dark:hover {
+  filter: brightness(.92);
+}
+
+/* On phones: less hero padding. */
+@media (max-width: 819px) {
+  .hero {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+}
 
 
 
 /* ===== HERO PHOTO — add assets/profile.jpg to replace the silhouette ===== */
-.av{position:relative}
-.av img{position:absolute;inset:0}
-.me{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-.photo{width:96px;height:96px;flex:none;border-radius:26px;overflow:hidden;position:relative;display:grid;place-items:end center;   /* hero photo size (bigger on desktop further down) */
-  background:linear-gradient(145deg,var(--accent),var(--accent2));
-  box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--accent),0 20px 36px -14px var(--shadow)}
-.photo svg{width:78%;fill:rgba(255,255,255,.9)}
-.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.me-t b{display:block;font-size:1.05rem}
-.me-t small{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.82rem}
-.me-t small i{width:8px;height:8px;border-radius:50%;background:#34b37b;animation:blink 1.6s steps(1) infinite}
-@media(min-width:820px){.photo{width:112px;height:112px;border-radius:30px}}
+/* Lets the avatar hold a positioned photo. */
+.av {
+  position: relative;
+}
+
+/* Avatar photo fills the avatar square. */
+.av img {
+  position: absolute;
+  inset: 0;
+}
+
+/* Row holding the hero photo and 'status' text. */
+.me {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Hero photo: size, rounded shape, gradient backing and accent ring. */
+.photo {
+  width: 96px;
+  height: 96px;
+  flex: none;
+  border-radius: 26px;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: end center;   /* hero photo size (bigger on desktop further down) */
+  background: linear-gradient(145deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent), 0 20px 36px -14px var(--shadow);
+}
+
+/* Silhouette icon inside the photo shape. */
+.photo svg {
+  width: 78%;
+  fill: rgba(255, 255, 255, .9);
+}
+
+/* Real photo fills the shape. */
+.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Name line next to the hero photo. */
+.me-t b {
+  display: block;
+  font-size: 1.05rem;
+}
+
+/* Small status text with a blinking dot. */
+.me-t small {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+/* The green blinking status dot. */
+.me-t small i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34b37b;
+  animation: blink 1.6s steps(1) infinite;
+}
+
+/* From 820px wide: larger hero photo. */
+@media (min-width: 820px) {
+  .photo {
+    width: 112px;
+    height: 112px;
+    border-radius: 30px;
+  }
+}
 
 
 
 /* ===== ANIMATIONS — glows use --glow / --glow2 (accent colors, see-through) so they follow the colorway ===== */
-:root{--glow:color-mix(in srgb,var(--accent) 50%,transparent);--glow2:color-mix(in srgb,var(--accent2) 45%,transparent)}   /* glow strength: raise 50% / 45% for stronger glows */
+/* Glow colors (--glow, --glow2) built from the accent colors. Raise the percentages for stronger glows. */
+:root {
+  --glow: color-mix(in srgb, var(--accent) 50%, transparent);
+  --glow2: color-mix(in srgb, var(--accent2) 45%, transparent);
+}   /* glow strength: raise 50% / 45% for stronger glows */
 
 
 
 /* SLIDE-IN: main.js adds .rv + a direction (l / r / u) to hide an element off to the side, then .in to slide it into place. */
-.rv{opacity:0;transition:opacity .85s cubic-bezier(.2,.8,.2,1) var(--d,0ms),transform .85s cubic-bezier(.2,.8,.2,1) var(--d,0ms)}   /* slide-in speed: .85s */
-.rv.l{transform:translateX(-56px)}.rv.r{transform:translateX(56px)}.rv.u{transform:translateY(36px)}
-.rv.in{opacity:1;transform:none}
+/* Slide-in start state: invisible. Speed is the .85s; --d is the per-item delay set by main.js. */
+.rv {
+  opacity: 0;
+  transition:
+    opacity .85s cubic-bezier(.2, .8, .2, 1) var(--d, 0ms),
+    transform .85s cubic-bezier(.2, .8, .2, 1) var(--d, 0ms);
+}   /* slide-in speed: .85s */
+
+/* Slide-in from the left (start offset). */
+.rv.l {
+  transform: translateX(-56px);
+}
+
+/* Slide-in from the right (start offset). */
+.rv.r {
+  transform: translateX(56px);
+}
+
+/* Slide-in from below (start offset). */
+.rv.u {
+  transform: translateY(36px);
+}
+
+/* Slide-in end state: visible, in place. */
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
 
 
 
 /* SECTION TITLES: the line after each title draws across once the title appears. */
-.js h2::after{transform:scaleX(0);transform-origin:left;transition:transform 1.1s cubic-bezier(.2,.8,.2,1) .25s}
-.js h2.seen::after{transform:none}
+/* Section-title line starts collapsed (zero width). */
+.js h2::after {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s cubic-bezier(.2, .8, .2, 1) .25s;
+}
+
+/* Section-title line draws across once the title appears. */
+.js h2.seen::after {
+  transform: none;
+}
 
 
 
 /* HEADER + COLORWAY BUTTON: slide in from the top / left as the page loads. */
-.top{transition:transform .9s cubic-bezier(.2,.8,.2,1),background-color .35s,border-color .35s}
-.js body:not(.ready) .top{transform:translateY(-110%)}
-#cw-btn{transition:transform .9s cubic-bezier(.2,.8,.2,1) .4s,border-color .2s}
-.js body:not(.ready) #cw-btn{transform:translateX(-160%)}
+/* Header slides down on page load (transition speed). */
+.top {
+  transition: transform .9s cubic-bezier(.2, .8, .2, 1), background-color .35s, border-color .35s;
+}
+
+/* Header starts hidden above the screen until the page is ready. */
+.js body:not(.ready) .top {
+  transform: translateY(-110%);
+}
+
+/* Colorway button slides in (speed and delay). */
+#cw-btn {
+  transition: transform .9s cubic-bezier(.2, .8, .2, 1) .4s, border-color .2s;
+}
+
+/* Colorway button starts off-screen to the left. */
+.js body:not(.ready) #cw-btn {
+  transform: translateX(-160%);
+}
 
 
 
 /* HERO MOTION: drifting banner color, glow that follows your cursor, floating code card, pulsing photo ring, breathing button. */
-.hero-bg{background-size:135% 135%,135% 135%,100% 100%;animation:bgdrift 16s ease-in-out infinite alternate}   /* banner color drift (speed = 16s) */
-@keyframes bgdrift{from{background-position:0 0,100% 100%,0 0}to{background-position:100% 55%,0 25%,0 0}}
-.hero-wrap::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,72%) var(--my,30%),color-mix(in srgb,var(--accent) 17%,transparent),transparent 70%)}
-.code{box-shadow:0 30px 70px -30px var(--glow),0 0 0 1px color-mix(in srgb,var(--accent) 24%,transparent)}   /* code-card glow */
-.code.float{animation:floaty 6s ease-in-out infinite}
-@keyframes floaty{50%{transform:translateY(-9px)}}
-.photo{animation:ring 3.2s ease-in-out infinite}   /* photo ring pulse (3.2s) */
-@keyframes ring{0%,100%{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--accent),0 20px 36px -14px var(--glow)}50%{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--accent),0 0 40px 6px var(--glow)}}
-.hero .btn.dark{animation:breathe 3.4s ease-in-out infinite}
-@keyframes breathe{50%{box-shadow:0 0 30px 2px var(--glow)}}
-.btn:hover,.hero .btn.dark:hover{animation:none;box-shadow:0 12px 34px -8px var(--glow)}
+/* Hero banner slowly drifts its colors. 16s = drift speed. */
+.hero-bg {
+  background-size: 135% 135%, 135% 135%, 100% 100%;
+  animation: bgdrift 16s ease-in-out infinite alternate;
+}   /* banner color drift (speed = 16s) */
+
+/* Moves the banner gradients between two positions. */
+@keyframes bgdrift {
+  from {
+    background-position: 0 0, 100% 100%, 0 0;
+  }
+
+  to {
+    background-position: 100% 55%, 0 25%, 0 0;
+  }
+}
+
+/* Soft glow that follows your cursor in the hero (main.js sets --mx/--my). */
+.hero-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 72%) var(--my, 30%), color-mix(in srgb, var(--accent) 17%, transparent), transparent 70%);
+}
+
+/* Code card gets a colored glow and accent outline. */
+.code {
+  box-shadow: 0 30px 70px -30px var(--glow), 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
+}   /* code-card glow */
+
+/* Code card floats up and down (6s = speed). */
+.code.float {
+  animation: floaty 6s ease-in-out infinite;
+}
+
+/* Float movement: rises 9px at the midpoint. */
+@keyframes floaty {
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* Hero photo ring pulses (3.2s = speed). */
+.photo {
+  animation: ring 3.2s ease-in-out infinite;
+}   /* photo ring pulse (3.2s) */
+
+/* Ring pulse: the glow grows and shrinks. */
+@keyframes ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent), 0 20px 36px -14px var(--glow);
+  }
+
+  50% {
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent), 0 0 40px 6px var(--glow);
+  }
+}
+
+/* Primary hero button gently 'breathes' with a glow. */
+.hero .btn.dark {
+  animation: breathe 3.4s ease-in-out infinite;
+}
+
+/* Breathing glow at the midpoint. */
+@keyframes breathe {
+  50% {
+    box-shadow: 0 0 30px 2px var(--glow);
+  }
+}
+
+/* On hover, stop breathing and show a stronger glow. */
+.btn:hover,
+.hero .btn.dark:hover {
+  animation: none;
+  box-shadow: 0 12px 34px -8px var(--glow);
+}
 
 
 
 /* GLOWS: every shadow here uses --glow / --glow2, so they change color with the colorway. */
-#progress{box-shadow:0 0 14px var(--glow)}
-#nav a.active{box-shadow:0 8px 22px -8px var(--glow)}
-.tl::after{box-shadow:0 0 14px var(--glow)}
-.card:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));box-shadow:0 22px 50px -24px var(--glow)}
-.pc:hover,.pc:focus-visible{box-shadow:0 26px 54px -22px var(--glow)}
-.edu:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));box-shadow:0 22px 46px -24px var(--glow)}
-.links a:hover{box-shadow:0 20px 44px -22px var(--glow)}
-.em::before{background:var(--accent);box-shadow:0 14px 30px -8px var(--glow)}
-.cw.on{box-shadow:0 0 0 1px var(--accent),0 10px 26px -12px var(--glow)}
-#cw-btn:hover{box-shadow:0 14px 34px -14px var(--glow)}
+/* Glow under the scroll-progress bar. */
+#progress {
+  box-shadow: 0 0 14px var(--glow);
+}
 
+/* Glow under the active nav tab. */
+#nav a.active {
+  box-shadow: 0 8px 22px -8px var(--glow);
+}
 
+/* Glow on the colored timeline line. */
+.tl::after {
+  box-shadow: 0 0 14px var(--glow);
+}
 
-/* GITHUB SQUARES: pop in column by column. */
-.js .heat i{opacity:0;transform:scale(.3)}
-.js .gh.seen .heat i{animation:cellIn .45s calc(var(--c) * 18ms) both}
-@keyframes cellIn{to{opacity:1;transform:none}}
+/* Larger glow on project cards when hovered or focused. */
+.pc:hover,
+.pc:focus-visible {
+  box-shadow: 0 26px 54px -22px var(--glow);
+}
+
+/* Education card hover: accent border and glow. */
+.edu:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  box-shadow: 0 22px 46px -24px var(--glow);
+}
+
+/* Contact link hover glow. */
+.links a:hover {
+  box-shadow: 0 20px 44px -22px var(--glow);
+}
+
+/* Emblem glow color. */
+.em::before {
+  background: var(--accent);
+  box-shadow: 0 14px 30px -8px var(--glow);
+}
+
+/* Selected colorway option glow. */
+.cw.on {
+  box-shadow: 0 0 0 1px var(--accent), 0 10px 26px -12px var(--glow);
+}
+
+/* Colorway button hover glow. */
+#cw-btn:hover {
+  box-shadow: 0 14px 34px -14px var(--glow);
+}
 
 
 
 /* COLORWAY SWITCH: the circular color wipe from where you clicked (older browsers just swap instantly). */
-::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
-::view-transition-old(root){z-index:1}::view-transition-new(root){z-index:2}
+/* Colorway switch animation: turn off the default cross-fade so the circular wipe shows. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Old theme snapshot sits underneath. */
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+/* New theme snapshot sits on top. */
+::view-transition-new(root) {
+  z-index: 2;
+}
 
 
 
-/* ===== SLIDES + HOVERS — project / skills / GitHub effects and the terminal ===== */
-.rv.big.l{transform:translateX(-120px)}.rv.big.r{transform:translateX(120px)}.rv.big.u{transform:translateY(70px)}
+/* ===== SLIDES + HOVERS — project / skills effects and the terminal ===== */
+/* 'Big' slide-in distances (larger offsets than the defaults above). */
+.rv.big.l {
+  transform: translateX(-120px);
+}
+
+.rv.big.r {
+  transform: translateX(120px);
+}
+
+.rv.big.u {
+  transform: translateY(70px);
+}
 
 /* EXPERIENCE REVEAL — the colored line leads, then each entry builds itself:
    1) the line reaches an entry  →  main.js adds the class .on to that .job
@@ -343,18 +1742,105 @@ footer{flex-wrap:wrap;gap:10px}
    3) the text rises in one line at a time (--k = order, 90ms apart)
    Nothing slides sideways, so the line and emblems always stay lined up.
    --s is an extra delay main.js sets when several entries appear at once (fast scrolling). */
-.js .job:not(.on) .em{opacity:0;transform:scale(.5)}
-.js .job.on .em{animation:stamp .7s cubic-bezier(.3,1.45,.5,1) var(--s,0s) both}
-@keyframes stamp{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
-.em::after{content:"";position:absolute;inset:-4px;border-radius:24px;border:2px solid var(--accent);opacity:0;pointer-events:none}
-.js .job.on .em::after{animation:ripple 1s ease-out calc(.15s + var(--s,0s))}
-@keyframes ripple{0%{opacity:.85;transform:scale(.9)}100%{opacity:0;transform:scale(1.55)}}
-.js .job:not(.on) .jb>*{opacity:0}
-.js .job.on .jb>*{animation:txtIn .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.3s + var(--s,0s) + var(--k,0) * 90ms)}
-.jb>:nth-child(1){--k:0}.jb>:nth-child(2){--k:1}.jb>:nth-child(3){--k:2}.jb>:nth-child(4){--k:3}
-@keyframes txtIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* Before a job is reached: emblem hidden and shrunk. */
+.js .job:not(.on) .em {
+  opacity: 0;
+  transform: scale(.5);
+}
+
+/* When reached: emblem 'stamps' in. */
+.js .job.on .em {
+  animation: stamp .7s cubic-bezier(.3, 1.45, .5, 1) var(--s, 0s) both;
+}
+
+/* Stamp animation: grows from half size with a slight overshoot. */
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Ripple ring around an emblem (hidden until animated). */
+.em::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Plays the ripple when the job appears. */
+.js .job.on .em::after {
+  animation: ripple 1s ease-out calc(.15s + var(--s, 0s));
+}
+
+/* Ripple animation: ring expands and fades. */
+@keyframes ripple {
+  0% {
+    opacity: .85;
+    transform: scale(.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+/* Before a job is reached: its text is hidden. */
+.js .job:not(.on) .jb > * {
+  opacity: 0;
+}
+
+/* When reached: text lines rise in one after another (90ms apart). */
+.js .job.on .jb > * {
+  animation: txtIn .7s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: calc(.3s + var(--s, 0s) + var(--k, 0) * 90ms);
+}
+
+/* Order numbers (--k) for the job text lines. */
+.jb > :nth-child(1) {
+  --k: 0;
+}
+
+.jb > :nth-child(2) {
+  --k: 1;
+}
+
+.jb > :nth-child(3) {
+  --k: 2;
+}
+
+.jb > :nth-child(4) {
+  --k: 3;
+}
+
+/* Text rise animation (used by jobs and project cards). */
+@keyframes txtIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* the colored line eases to its new length instead of jumping while you scroll */
-.tl::after{transition:height .3s ease-out}
+/* Colored line eases to its new length instead of jumping. */
+.tl::after {
+  transition: height .3s ease-out;
+}
 
 
 
@@ -362,132 +1848,507 @@ footer{flex-wrap:wrap;gap:10px}
    left → right, the image settles from slightly zoomed-in, then the text lines fade up one by one.
    main.js adds .rv + .u (hidden, lowered) and then .in (visible); .seen stays on once it has played.
    --dd = this card's start delay (set by main.js); --k = the order of the text lines. */
-.pc.rv.u:not(.in){transform:translateY(34px) scale(.965)}
-.js .pc.seen .ph{animation:imgSettle 1.1s cubic-bezier(.2,.8,.2,1) calc(.1s + var(--dd,0ms)) both}
-@keyframes imgSettle{from{transform:scale(1.14);filter:saturate(.5) brightness(.85)}to{transform:none;filter:none}}
-.js .pc:not(.seen) .pc-b>*{opacity:0}
-.js .pc.seen .pc-b>*{animation:txtIn .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.3s + var(--dd,0ms) + var(--k,0) * 70ms)}
-.pc-b>:nth-child(1){--k:0}.pc-b>:nth-child(2){--k:1}.pc-b>:nth-child(3){--k:2}.pc-b>:nth-child(4){--k:3}.pc-b>:nth-child(5){--k:4}
+/* Project card start state: lowered and slightly small before it rises in. */
+.pc.rv.u:not(.in) {
+  transform: translateY(34px) scale(.965);
+}
+
+/* Card image settles from slightly zoomed-in when the card appears. */
+.js .pc.seen .ph {
+  animation: imgSettle 1.1s cubic-bezier(.2, .8, .2, 1) calc(.1s + var(--dd, 0ms)) both;
+}
+
+/* Image settle animation: zoom, color and brightness ease to normal. */
+@keyframes imgSettle {
+  from {
+    transform: scale(1.14);
+    filter: saturate(.5) brightness(.85);
+  }
+
+  to {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Before a card appears: its text lines are hidden. */
+.js .pc:not(.seen) .pc-b > * {
+  opacity: 0;
+}
+
+/* After: text lines fade up one by one (70ms apart). */
+.js .pc.seen .pc-b > * {
+  animation: txtIn .7s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: calc(.3s + var(--dd, 0ms) + var(--k, 0) * 70ms);
+}
+
+/* Order numbers (--k) for the card text lines. */
+.pc-b > :nth-child(1) {
+  --k: 0;
+}
+
+.pc-b > :nth-child(2) {
+  --k: 1;
+}
+
+.pc-b > :nth-child(3) {
+  --k: 2;
+}
+
+.pc-b > :nth-child(4) {
+  --k: 3;
+}
+
+.pc-b > :nth-child(5) {
+  --k: 4;
+}
 
 
 
 /* TECHNICAL SKILLS hover: the column lifts + glows, the title underline draws, chips pop and tilt. */
-#skills .three>div{padding:20px;border:1px solid transparent;border-radius:18px;transition:background .3s,border-color .3s,box-shadow .3s,transform .3s}
-#skills .three>div:hover{background:var(--panel);border-color:color-mix(in srgb,var(--accent) 50%,var(--line));box-shadow:0 22px 46px -24px var(--glow);transform:translateY(-5px)}
-#skills h3::after{content:"";display:block;height:2px;width:0;margin-top:6px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .45s cubic-bezier(.2,.8,.2,1)}
-#skills .three>div:hover h3::after{width:100%}
-#skills .chips span{cursor:default;transition:transform .3s cubic-bezier(.3,1.7,.5,1),background .2s,color .2s,box-shadow .3s}
-#skills .chips span:hover{transform:translateY(-5px) scale(1.12) rotate(-3deg);background:var(--accent);color:var(--on-accent);box-shadow:0 12px 24px -8px var(--glow)}
-#ski
+/* Skill column: padding, rounded, transparent border (so it can appear on hover). */
+#skills .three > div {
+  padding: 20px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  transition: background .3s, border-color .3s, box-shadow .3s, transform .3s;
+}
 
+/* Skill column hover: panel background, accent border, glow, lifts up. */
+#skills .three > div:hover {
+  background: var(--panel);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  box-shadow: 0 22px 46px -24px var(--glow);
+  transform: translateY(-5px);
+}
 
+/* Skill title underline: starts at zero width. */
+#skills h3::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .45s cubic-bezier(.2, .8, .2, 1);
+}
 
-/* GITHUB CARD hover: spotlight follows the mouse, 3D tilt (set by main.js), numbers light up, squares twinkle. */
-.card{position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(280px circle at var(--px,50%) var(--py,50%),color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
-.card:hover::before{opacity:1}
-.card>*{position:relative;z-index:1}
-.card.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .25s ease,box-shadow .3s,border-color .3s}
-.card.tilt:hover{--ty:-6px}
-.ghs b{transition:color .3s,transform .3s;transform-origin:left}
-.gh:hover .ghs b{color:var(--accent);transform:scale(1.07)}
-.js .gh.settled .heat i{opacity:1;transform:none;animation:none}
-.js .gh.settled:hover .heat i{animation:twinkle 1.5s ease-in-out infinite;animation-delay:calc(var(--c) * 45ms)}
-@keyframes twinkle{50%{transform:scale(1.4);filter:brightness(1.7)}}
-.chip-link{transition:transform .25s}
-.gh:hover .chip-link{transform:translateX(4px)}
+/* Underline grows to full width when the column is hovered. */
+#skills .three > div:hover h3::after {
+  width: 100%;
+}
 
+/* Skill pills: no pointer, animated pop. */
+#skills .chips span {
+  cursor: default;
+  transition: transform .3s cubic-bezier(.3, 1.7, .5, 1), background .2s, color .2s, box-shadow .3s;
+}
 
+/* Skill pill hover: pops up, tilts, fills with the accent color. */
+#skills .chips span:hover {
+  transform: translateY(-5px) scale(1.12) rotate(-3deg);
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 12px 24px -8px var(--glow);
+}
 
 /* CODE CARD: status text, Pause button, scan bar while "running", and the terminal under the code. */
-.code{position:relative}
+/* Lets the code card hold positioned layers (scan bar). */
+.code {
+  position: relative;
+}
+
 /* STATUS PILL (code-card title bar): one word + a colored dot. Dot: gray = Idle · amber = Typing · orange (blinking) = Running · green = Done.
    The run time appears as the last terminal line instead (class .fin). */
-.code-bar .stat{display:inline-flex;align-items:center;gap:6px;margin-left:auto;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07);font:600 .64rem 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#cfc6b6;white-space:nowrap}
-.code-bar .stat::before{content:"";width:7px;height:7px;border-radius:50%;background:#6b6254}
-.code-bar .stat.type::before{background:#e0bb6a}
-.code-bar .stat.run::before{background:#e29a76;animation:blink 1s steps(1) infinite}
-.code-bar .stat.ok::before{background:#86c9bf;box-shadow:0 0 8px #86c9bf}
-#fname{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}   /* long file names get "…" instead of wrapping */
-.term .fin{margin-top:6px;color:#8a8174}
-.run{margin-left:10px;font:700 .72rem 'Inter',sans-serif;color:#14110d;background:#86c9bf;border:0;border-radius:7px;padding:4px 11px;cursor:pointer;transition:transform .2s,filter .2s}
-.run:hover{filter:brightness(1.15);transform:translateY(-1px)}
-.code pre{min-height:calc(8 * 1.8 * .86rem + 40px)}   /* reserves 8 lines so the card never jumps */
-.code.running{box-shadow:0 30px 80px -24px var(--glow),0 0 0 1px color-mix(in srgb,var(--accent) 55%,transparent)}
-.code.running::after{content:"";position:absolute;left:0;right:0;top:44px;height:46px;pointer-events:none;background:linear-gradient(transparent,rgba(134,201,191,.22),transparent);animation:scan .95s linear infinite}   /* scan bar sweeping the code while "running" */
-@keyframes scan{to{top:calc(44px + 230px)}}
-.term{border-top:1px solid #3a3228;background:#15120f;padding:14px 22px 16px;min-height:204px;font:500 .8rem/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d8cfc0}   /* terminal: min-height fits 7 lines */
-.term p{margin:0}
-.term .dim{color:#8a8174}
-.term .ln{opacity:0}
-.term .ln.in{animation:lineIn .4s ease both}
-@keyframes lineIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
-.term .ok{color:#86c9bf}
-.term .k2{display:inline-block;min-width:11ch;color:#e0bb6a}
+/* Status pill in the code card title bar (the word + dot). */
+.code-bar .stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .07);
+  font: 600 .64rem 'Inter', sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #cfc6b6;
+  white-space: nowrap;
+}
 
+/* The status dot (gray when idle). */
+.code-bar .stat::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6b6254;
+}
 
+/* Typing: amber dot. */
+.code-bar .stat.type::before {
+  background: #e0bb6a;
+}
 
-/* GITHUB FEATURE CARD: full-width layout (info left, activity grid right). */
-.band{margin-top:30px}
-@media(min-width:860px){.band{grid-template-columns:1fr}}
-.gh{display:grid;gap:26px;padding:26px 28px}
-@media(min-width:780px){.gh{grid-template-columns:260px 1fr;align-items:center;gap:40px}}
-.gh-r{min-width:0}
-.heat{grid-template-columns:repeat(36,1fr)}
-.legend{display:flex;align-items:center;justify-content:flex-end;gap:5px;margin-top:12px;font-size:.72rem;color:var(--muted)}
-.legend i{width:11px;height:11px;border-radius:3px;background:var(--panel2)}
-.legend .l1{background:color-mix(in srgb,var(--accent) 28%,var(--panel2))}.legend .l2{background:color-mix(in srgb,var(--accent) 52%,var(--panel2))}
-.legend .l3{background:color-mix(in srgb,var(--accent) 76%,var(--panel2))}.legend .l4{background:var(--accent)}
-.gh .note{text-align:right}
+/* Running: orange blinking dot. */
+.code-bar .stat.run::before {
+  background: #e29a76;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Done: green glowing dot. */
+.code-bar .stat.ok::before {
+  background: #86c9bf;
+  box-shadow: 0 0 8px #86c9bf;
+}
+
+/* File name: long names get an ellipsis instead of wrapping. */
+#fname {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}   /* long file names get "…" instead of wrapping */
+
+/* Run-time line at the end of the terminal. */
+.term .fin {
+  margin-top: 6px;
+  color: #b8ae9d;
+}
+
+/* The small Run/Pause button in the code card title bar. */
+.run {
+  margin-left: 10px;
+  font: 700 .72rem 'Inter', sans-serif;
+  color: #14110d;
+  background: #86c9bf;
+  border: 0;
+  border-radius: 7px;
+  padding: 4px 11px;
+  cursor: pointer;
+  transition: transform .2s, filter .2s;
+}
+
+/* Run button hover: brightens and lifts. */
+.run:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* Reserves 8 lines of code height so the card never jumps in size. */
+.code pre {
+  min-height: calc(8 * 1.8 * .86rem + 40px);
+}   /* reserves 8 lines so the card never jumps */
+
+/* While 'running': stronger glow and accent outline. */
+.code.running {
+  box-shadow: 0 30px 80px -24px var(--glow), 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+/* Scan bar that sweeps down the code while running. */
+.code.running::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44px;
+  height: 46px;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgba(134, 201, 191, .22), transparent);
+  animation: scan .95s linear infinite;
+}   /* scan bar sweeping the code while "running" */
+
+/* Scan movement: slides the bar down 230px. */
+@keyframes scan {
+  to {
+    top: calc(44px + 230px);
+  }
+}
+
+/* Terminal area under the code: dark background and monospace text. min-height fits 7 lines. */
+.term {
+  border-top: 1px solid #3a3228;
+  background: #15120f;
+  padding: 14px 22px 16px;
+  min-height: 204px;
+  font: 500 .8rem/1.75 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #d8cfc0;
+}   /* terminal: min-height fits 7 lines */
+
+/* No extra margin on terminal lines. */
+.term p {
+  margin: 0;
+}
+
+/* Dimmed terminal text (the command line). */
+.term .dim {
+  color: #b8ae9d;
+}
+
+/* Terminal output line: starts hidden. */
+.term .ln {
+  opacity: 0;
+}
+
+/* When added, the line slides in and shows. */
+.term .ln.in {
+  animation: lineIn .4s ease both;
+}
+
+/* Slide-in animation for terminal lines. */
+@keyframes lineIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Green success text in the terminal. */
+.term .ok {
+  color: #86c9bf;
+}
+
+/* Fixed-width label so values line up (amber). */
+.term .k2 {
+  display: inline-block;
+  min-width: 11ch;
+  color: #e0bb6a;
+}
 
 
 
 /* ===== EMBLEMS (final) — size: .em + the .job column + .tl left/top (= half the size) ===== */
-.job{grid-template-columns:80px 1fr;z-index:1}   /* emblem column = emblem size */
-.tl::before,.tl::after{left:39px;top:40px;z-index:0}   /* line position: left = half the emblem − 1 · top = half the emblem */
-.tl::before{bottom:40px}
-.tl::after{height:calc((100% - 80px) * var(--p))}
-.em{width:80px;height:80px;border-radius:20px}   /* emblem size — keep the .job column and .tl numbers matching */
-.job .em{background:var(--bg);box-shadow:0 0 0 7px var(--bg)}          /* solid backing so the line never shows through */
-.em::before{border-radius:20px}
-.logo{border:0;border-radius:20px;font-size:1.3rem;letter-spacing:.02em;color:var(--on-accent);text-shadow:0 2px 10px rgba(0,0,0,.3);   /* emblem look: highlight + glow + texture + gradient, inner border, shadow */
+/* Final job layout: emblem column width (80px) must match the emblem size below. */
+.job {
+  grid-template-columns: 80px 1fr;
+  z-index: 1;
+}   /* emblem column = emblem size */
+
+/* Final timeline line position: left = half the emblem − 1, top = half the emblem. */
+.tl::before,
+.tl::after {
+  left: 39px;
+  top: 40px;
+  z-index: 0;
+}   /* line position: left = half the emblem − 1 · top = half the emblem */
+
+/* Gray track now ends 40px from the bottom. */
+.tl::before {
+  bottom: 40px;
+}
+
+/* Colored line height now accounts for the 80px emblem. */
+.tl::after {
+  height: calc((100% - 80px) * var(--p));
+}
+
+/* Final emblem size: 80px (keep .job and .tl numbers matching). */
+.em {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+}   /* emblem size — keep the .job column and .tl numbers matching */
+
+/* Job emblems get a solid backing so the timeline line never shows through them. */
+.job .em {
+  background: var(--bg);
+  box-shadow: 0 0 0 7px var(--bg);
+}   /* solid backing so the line never shows through */
+
+/* Backing layer matches the new corner radius. */
+.em::before {
+  border-radius: 20px;
+}
+
+/* Final emblem look: gradient, highlight, texture, inner border and glow. */
+.logo {
+  border: 0;
+  border-radius: 20px;
+  font-size: 1.3rem;
+  letter-spacing: .02em;
+  color: var(--on-accent);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .3);   /* emblem look: highlight + glow + texture + gradient, inner border, shadow */
   background:
-    radial-gradient(circle at 22% 14%,rgba(255,255,255,.45),transparent 52%),
-    radial-gradient(circle at 92% 100%,color-mix(in srgb,var(--accent2) 85%,transparent),transparent 62%),
-    repeating-linear-gradient(135deg,rgba(255,255,255,.1) 0 2px,transparent 2px 9px),
-    linear-gradient(145deg,var(--accent),var(--accent2));
-  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3),inset 0 -12px 20px -10px rgba(0,0,0,.28),0 14px 26px -12px var(--glow)}
-.logo::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 36%,rgba(255,255,255,.3) 50%,transparent 64%);transform:translateX(-130%);animation:sheen 5s ease-in-out infinite}
-@keyframes sheen{0%,62%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
-.edu .em{background:none;box-shadow:none}
+    radial-gradient(circle at 22% 14%, rgba(255, 255, 255, .45), transparent 52%),
+    radial-gradient(circle at 92% 100%, color-mix(in srgb, var(--accent2) 85%, transparent), transparent 62%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, .1) 0 2px, transparent 2px 9px),
+    linear-gradient(145deg, var(--accent), var(--accent2));
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, .3),
+    inset 0 -12px 20px -10px rgba(0, 0, 0, .28),
+    0 14px 26px -12px var(--glow);
+}
+
+/* Light sheen that sweeps across the emblem (5s cycle). */
+.logo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, .3) 50%, transparent 64%);
+  transform: translateX(-130%);
+  animation: sheen 5s ease-in-out infinite;
+}
+
+/* Sheen movement from left to right. */
+@keyframes sheen {
+  0%,
+  62% {
+    transform: translateX(-130%);
+  }
+
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+/* Education emblems have no backing box. */
+.edu .em {
+  background: none;
+  box-shadow: none;
+}
 
 
 
 /* ===== EMBLEM HOVER — soft lift + colored glow ===== */
-.em::before{inset:7px;border-radius:26px;background:var(--accent);filter:blur(22px);box-shadow:none;opacity:0;transform:none;transition:opacity .5s ease}
-.edu:hover .em::before,.job:hover .em::before{opacity:.5;transform:none}
-.logo{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease}
-.edu:hover .logo,.job:hover .logo{transform:translateY(-5px) scale(1.04);
-  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.42),inset 0 -12px 20px -10px rgba(0,0,0,.28),0 24px 36px -14px var(--glow),0 10px 20px -12px rgba(0,0,0,.5)}
-.edu:hover .logo::after,.job:hover .logo::after{animation-duration:1.8s}
+/* Emblem hover glow: blurred accent-colored light behind the tile (fades in). */
+.em::before {
+  inset: 7px;
+  border-radius: 26px;
+  background: var(--accent);
+  filter: blur(22px);
+  box-shadow: none;
+  opacity: 0;
+  transform: none;
+  transition: opacity .5s ease;
+}
+
+/* Show the glow when an education card or job is hovered. */
+.edu:hover .em::before,
+.job:hover .em::before {
+  opacity: .5;
+  transform: none;
+}
+
+/* Logo transition speed for the hover lift. */
+.logo {
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .5s ease;
+}
+
+/* Hover: logo lifts, grows slightly and gets a stronger shadow. */
+.edu:hover .logo,
+.job:hover .logo {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, .42),
+    inset 0 -12px 20px -10px rgba(0, 0, 0, .28),
+    0 24px 36px -14px var(--glow),
+    0 10px 20px -12px rgba(0, 0, 0, .5);
+}
+
+/* Hover: the sheen sweeps faster (1.8s). */
+.edu:hover .logo::after,
+.job:hover .logo::after {
+  animation-duration: 1.8s;
+}
 
 
 
 /* ===== SCROLL FADE — blocks fade in near the screen and out when they leave ===== */
-.js .fade{opacity:0;transform:translateY(22px);transition:opacity .85s cubic-bezier(.2,.8,.2,1),transform .85s cubic-bezier(.2,.8,.2,1)}   /* scroll fade: .85s speed · 22px drift */
-.js .fade.vis{opacity:1;transform:none}
+/* Scroll fade start state: hidden and slightly lowered. .85s = speed, 22px = drift. */
+.js .fade {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .85s cubic-bezier(.2, .8, .2, 1), transform .85s cubic-bezier(.2, .8, .2, 1);
+}   /* scroll fade: .85s speed · 22px drift */
+
+/* Scroll fade visible state. */
+.js .fade.vis {
+  opacity: 1;
+  transform: none;
+}
 
 
 
 /* ===== CODE CARD (endless) — language badge + terminal lines ===== */
-.code-bar .lang{display:inline-flex;align-items:center;gap:7px;margin-left:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07);font:700 .64rem 'Inter',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#d8cfc0}
-.code-bar .lang>i:nth-child(1){width:7px;height:7px;border-radius:50%;background:var(--lc,#86c9bf);box-shadow:0 0 8px var(--lc,#86c9bf)}
-.code-bar .lang em{font-style:normal}
-.term{overflow:hidden}
-.term p{white-space:pre}
-.term .o{color:#f1e9dc}
-.term .ln{transform:translateX(-12px);transition:opacity .4s,transform .4s}
-.term .ln.in{animation:none;opacity:1;transform:none}
-@media(max-width:480px){.code-bar .stat{font-size:0;gap:0;padding:6px}.code-bar .run{margin-left:0}}   /* phones: the pill shrinks to just its colored dot */
+/* Language badge (e.g. JS) in the code card title bar. */
+.code-bar .lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 12px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .07);
+  font: 700 .64rem 'Inter', sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #d8cfc0;
+}
 
-#toast{max-width:min(92vw,520px);text-align:center}
+/* The colored dot in the language badge (color from --lc set by main.js). */
+.code-bar .lang > i:nth-child(1) {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lc, #86c9bf);
+  box-shadow: 0 0 8px var(--lc, #86c9bf);
+}
+
+/* Language name text. */
+.code-bar .lang em {
+  font-style: normal;
+}
+
+/* Terminal clips overflowing text. */
+.term {
+  overflow: hidden;
+}
+
+/* Terminal lines never wrap. */
+.term p {
+  white-space: pre;
+}
+
+/* Plain output text color. */
+.term .o {
+  color: #f1e9dc;
+}
+
+/* Terminal line start state: hidden and shifted left. */
+.term .ln {
+  transform: translateX(-12px);
+  transition: opacity .4s, transform .4s;
+}
+
+/* Terminal line visible state. */
+.term .ln.in {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* On phones: status pill shrinks to just its dot and the Run button loses its left gap. */
+@media (max-width: 480px) {
+  .code-bar .stat {
+    font-size: 0;
+    gap: 0;
+    padding: 6px;
+  }
+
+  .code-bar .run {
+    margin-left: 0;
+  }
+}   /* phones: the pill shrinks to just its colored dot */
+
+/* Toast size limit and centered text. */
+#toast {
+  max-width: min(92vw, 520px);
+  text-align: center;
+}
