@@ -4,7 +4,7 @@
    WHAT TO CHANGE → search for this text (then look for the property named in brackets)
      page width ......... .wrap {  [max-width]          space between sections ... h2 {  [margin: 84px …]
      hero height ........ .hero {  [padding-top/bottom] banner fade ............. .hero-bg::after {
-     font / text size ... body {  [font]                glow strength ........... --glow:
+     font / text size ... :root {  [--fs = body text size]                glow strength ........... --glow:
      slide speed ........ .rv {  [transition]           scroll fade ............. .js .fade {
      emblem size ........ .em {  [width: 80px]          project columns ......... .grid {
      code-card colors ... .code {  [background]         timeline line ........... .tl::before,  [left: 39px]
@@ -27,6 +27,7 @@
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  --fs: .9375rem;   /* [EDIT] body text size under the section titles: .9375rem = 15px (.875rem = 14px, 1rem = 16px). Raise or lower this one number. */
 }
 
 /* Reset: padding and borders count inside an element's width so boxes don't overflow. */
@@ -47,7 +48,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font: 400 .4rem/1.5 'Inter', system-ui, sans-serif;
+  font: 400 var(--fs)/1.65 'Inter', system-ui, sans-serif;
   overflow-x: clip;
   transition: background .3s, color .3s;
 }   /* base font and text size */
@@ -75,10 +76,10 @@ figure {
   padding: 0 24px;
 }   /* page content width */
 
-/* Soft gray text for secondary information. Education card font size */
+/* Soft gray text for secondary information. */
 .muted {
   color: var(--muted);
-  font-size: 1.38rem; /* [Size] Want to connect about projects, internships, or tech roles? Reach out.*/
+  font-size: var(--fs);
 }
 
 
@@ -333,15 +334,15 @@ section.wrap {
   padding-bottom: 10px;
 }
 
-/* Section titles (About, Education…): large uppercase text. font-size = clamp(smallest, fluid, largest). margin-top = space between sections. */
+/* Section titles (About, Education…): uppercase, clearly larger than the text. font-size = clamp(smallest, fluid, largest). margin-top = space between sections. */
 h2 {
   display: flex;
   align-items: center;
   gap: 14px;
   margin: 84px 0 26px;
-  font-size: clamp(1.75rem, 4vw, 2.1rem);
-  font-weight: 800;
-  letter-spacing: .06em;
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: .05em;
   text-transform: uppercase;
 }   /* section title · margin-top 84px = space between sections */
 
@@ -355,13 +356,13 @@ h2::after {
 
 /* Sub-headings (card and column titles). Change font-size to resize them. */
 h3 {
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   font-weight: 600;
 }
 
 /* Big intro paragraph in About. */
 .lead {
-  font-size: 1.8rem;
+  font-size: calc(var(--fs) * 1.2);
   color: var(--muted);
   max-width: 60ch;
   margin-bottom: 26px;
@@ -391,16 +392,16 @@ h3 {
   margin-bottom: 10px;
 }
 
-/* Bullet lists: indent and gray text. Experince bullet size */
+/* Bullet lists: indent and gray text. */
 ul {
   padding-left: 18px;
   color: var(--muted);
-  font-size: 1.56rem; /**/
+  font-size: var(--fs);
 }
 
 /* Space between list items. */
 li {
-  margin: 6px 0;
+  margin: 5px 0;
 }
 
 /* Row of small tag pills that wraps onto new lines. */
@@ -413,9 +414,9 @@ li {
 /* Tag pill look (skills, project tech): small rounded capsule in a tinted accent color. */
 .chips span,
 .tags-i {
-  font-size: .95rem; /* Tag size */
+  font-size: .8rem;
   font-weight: 500;
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
@@ -423,7 +424,7 @@ li {
 
 /* Accent-colored tech line under a title. */
 .tags {
-  font-size: .92rem;
+  font-size: .8rem;
   font-weight: 600;
   color: var(--accent);
   margin-top: 8px;
@@ -433,7 +434,7 @@ li {
 .org {
   color: var(--accent2);
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: var(--fs);
 }
 
 
@@ -588,7 +589,7 @@ li {
 
 /* Date text: small and gray. */
 .date {
-  font-size: .95rem;
+  font-size: .8rem;
   color: var(--muted);
 }
 
@@ -610,7 +611,7 @@ li {
 
 /* Filter button: pill shape, border, gray text. */
 .filters button {
-  font: 500 .95rem 'Inter';
+  font: 500 .85rem 'Inter';
   padding: 7px 16px;
   border-radius: 99px;
   border: 1px solid var(--line);
@@ -685,7 +686,7 @@ li {
 
 /* Small uppercase category label on a card. */
 .tag {
-  font-size: .8rem;
+  font-size: .72rem;
   font-weight: 600;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -695,12 +696,12 @@ li {
 /* Card title spacing. */
 .pc h3 {
   margin: 4px 0 4px;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
 }
 
 /* Card description, cut off after 3 lines (change the 3 in -webkit-line-clamp for more/fewer). */
 .pc p.d {
-  font-size: 1rem;
+  font-size: var(--fs);
   color: var(--muted);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -744,7 +745,7 @@ li {
 
 /* Gallery caption text. */
 figcaption {
-  font-size: .95rem;
+  font-size: .84rem;
   color: var(--muted);
   margin-top: 8px;
 }
@@ -762,7 +763,7 @@ figcaption {
   border-radius: 16px;
   padding: 18px 20px;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: calc(var(--fs) * 1.08);
   word-break: break-word;
   transition: .25s;
   align-items: center;
@@ -778,7 +779,7 @@ figcaption {
 /* Small uppercase label above each contact link. */
 .links small {
   display: block;
-  font-size: .8rem;
+  font-size: .72rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1086,7 +1087,7 @@ kbd {
   display: flex;
   gap: 16px;
   margin-top: 12px;
-  font-size: .9rem;
+  font-size: .82rem;
   font-weight: 600;
 }
 
