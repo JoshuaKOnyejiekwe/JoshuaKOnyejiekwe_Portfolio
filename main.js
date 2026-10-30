@@ -25,8 +25,8 @@ const root = document.documentElement;            // the <html> element (colorwa
 // ---------------------------------------------------------------------
 const projects = [
   // Project 1
-  { t: 'LinkinReachly (Open Source)', c: ['Software'], date: '2026', tech: ['TypeScript', 'CSS' , 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/LinkinReachly-I', demo: '#',
-    d: 'Accessible.' },
+  { t: 'LinkinReachly (Open Source)', c: ['Software'], date: '2026', tech: ['TypeScript', 'CSS' , 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/LinkinReachly-I', demo: 'https://linkinreachly.com/',
+    d: 'Open-source Electron desktop app that automates LinkedIn job applications, so you can use Easy Apply without filling in each form by hand. It drives the apply flow with Chrome DevTools Protocol (CDP) automation, including LinkedIn\'s server-driven UI (SDUI) forms.' },
 
   // Project 2
   { t: 'Honey Trail', c: ['Software'], date: '2026', tech: ['Python'], repo: 'https://github.com/JoshuaKOnyejiekwe/Honey-Trail',
@@ -45,7 +45,7 @@ const projects = [
     d: 'Swap.' },
 
   // Project 6
-  { t: 'FlickList', c: ['Web'], date: '2026', tech: ['Ruby on Rails, HTML, CSS, JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/FlickList',
+  { t: 'FlickList', c: ['Web'], date: '2026', tech: ['Ruby on Rails', 'HTML', 'CSS', 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/FlickList',
     d: 'Swap.' },
 
   // Project 7

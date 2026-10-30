@@ -140,12 +140,12 @@ figure {
   line-height: 1.2;
 }
 
-/* Name line (bold). */
+/* My name nxt to the profile pic and ontop of the CS|SWE txt (bold). */
 .who b {
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
-/* Small gray subtitle under the name. */
+/* Small gray subtitle under the name, the CS | SWE txt */
 .who small {
   font-size: .76rem;
   color: var(--muted);
