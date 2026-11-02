@@ -22,34 +22,35 @@ const root = document.documentElement;            // the <html> element (colorwa
 // 1 · PROJECTS  [EDIT] — one { } per project = one card + one popup. Copy a block to add one.
 //   t title · c categories (become the filter buttons) · date · tech tags · d description
 //   repo = code link · demo = live link (both optional; delete the field if unused)
+//   img = the project's picture, used on the card AND in the popup so they always match (e.g. img: 'assets/nimbus.png'). Missing file = gray placeholder.
 // ---------------------------------------------------------------------
 const projects = [
   // Project 1
-  { t: 'LinkinReachly (Open Source)', c: ['Software'], date: '2026', tech: ['TypeScript', 'CSS' , 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/LinkinReachly-I', demo: 'https://linkinreachly.com/',
+  { t: 'LinkinReachly (Open Source)', img: 'assets/LinkinReachly.png', c: ['Software'], date: '2026', tech: ['TypeScript', 'CSS' , 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/LinkinReachly-I', demo: 'https://linkinreachly.com/',
     d: 'Open-source Electron desktop app that automates LinkedIn job applications, so you can use Easy Apply without filling in each form by hand. It drives the apply flow with Chrome DevTools Protocol (CDP) automation, including LinkedIn\'s server-driven UI (SDUI) forms.' },
 
   // Project 2
-  { t: 'Honey Trail', c: ['Software'], date: '2026', tech: ['Python'], repo: 'https://github.com/JoshuaKOnyejiekwe/Honey-Trail',
+  { t: 'Honey Trail', img: 'assets/honey-trail.png', c: ['Software'], date: '2026', tech: ['Python'], repo: 'https://github.com/JoshuaKOnyejiekwe/Honey-Trail',
     d: 'Interactive.' },
 
   // Project 3
-  { t: 'Nimbus', c: ['Web'], date: '2026', tech: ['JavaScript', 'CSS', 'HTML'], repo: 'https://github.com/JoshuaKOnyejiekwe/Nimbus',
+  { t: 'Nimbus', img: 'assets/nimbus.png', c: ['Web'], date: '2026', tech: ['JavaScript', 'CSS', 'HTML'], repo: 'https://github.com/JoshuaKOnyejiekwe/Nimbus',
     d: 'Reusable.' },
 
   // Project 4
-  { t: 'The Cozy Cup', c: ['Web'], date: '2026', tech: ['CSS', 'JavaScript', 'SQL', 'HTML'], repo: 'https://github.com/JoshuaKOnyejiekwe/The-Cozy-Cup', demo: '#',
+  { t: 'The Cozy Cup', img: 'assets/the-cozy-cup.png', c: ['Web'], date: '2026', tech: ['CSS', 'JavaScript', 'SQL', 'HTML'], repo: 'https://github.com/JoshuaKOnyejiekwe/The-Cozy-Cup', demo: '#',
     d: 'This' },
 
   // Project 5
-  { t: 'ThreadLink', c: ['Software'], date: '2026', tech: ['Python'], repo: 'https://github.com/JoshuaKOnyejiekwe/ThreadLink',
+  { t: 'ThreadLink', img: 'assets/threadlink.png', c: ['Software'], date: '2026', tech: ['Python'], repo: 'https://github.com/JoshuaKOnyejiekwe/ThreadLink',
     d: 'Swap.' },
 
   // Project 6
-  { t: 'FlickList', c: ['Web'], date: '2026', tech: ['Ruby on Rails', 'HTML', 'CSS', 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/FlickList',
+  { t: 'FlickList', img: 'assets/flicklist.png', c: ['Web'], date: '2026', tech: ['Ruby on Rails', 'HTML', 'CSS', 'JavaScript'], repo: 'https://github.com/JoshuaKOnyejiekwe/FlickList',
     d: 'Swap.' },
 
   // Project 7
-  { t: 'CoverageGap', c: ['Web', 'Data'], date: '2026', tech: ['JavaScript', 'Python', 'HTML', 'CSS'], repo: 'https://github.com/JoshuaKOnyejiekwe/CoverageGap',
+  { t: 'CoverageGap', img: 'assets/coveragegap.png', c: ['Web', 'Data'], date: '2026', tech: ['JavaScript', 'Python', 'HTML', 'CSS'], repo: 'https://github.com/JoshuaKOnyejiekwe/CoverageGap',
     d: 'Swap.' },
 ];
 
@@ -65,7 +66,7 @@ function renderFilters() {
 function renderGrid() {
   grid.innerHTML = projects.map((p, i) => ({ p, i })).filter(({ p }) => current === 'All' || p.c.includes(current)).map(({ p, i }) => `
     <article class="pc" data-i="${i}" tabindex="0" role="button" aria-label="${p.t}, details">
-      <div class="ph"><span>Project image</span></div>
+      <div class="ph"><span>Project image</span>${p.img ? `<img src="${p.img}" alt="${p.t}" onerror="this.remove()">` : ''}</div>
       <div class="pc-b"><p class="tag">${p.c.join(' · ')}</p><h3>${p.t}</h3><p class="d">${p.d}</p>
       <p class="chips">${p.tech.map(t => `<span>${t}</span>`).join('')}</p>
       <p class="qa">${p.repo ? `<a href="${p.repo}" target="_blank" rel="noopener">Repo ↗</a>` : ''}${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Live ↗</a>` : ''}</p></div>
@@ -85,6 +86,7 @@ grid.addEventListener('click', e => {
   document.getElementById('m-title').textContent = p.t;
   document.getElementById('m-date').textContent = p.date;
   document.getElementById('m-desc').textContent = p.d;
+  document.getElementById('m-img').innerHTML = '<span>Project image</span>' + (p.img ? `<img src="${p.img}" alt="${p.t}" onerror="this.remove()">` : '');   // popup shows the SAME picture as the card
   document.getElementById('m-tech').innerHTML = p.tech.map(t => `<span>${t}</span>`).join('');
   document.getElementById('m-links').innerHTML =
     (p.repo ? `<a class="btn dark" href="${p.repo}" target="_blank" rel="noopener">Repo</a>` : '') +
@@ -226,48 +228,10 @@ document.addEventListener('click', e => { if (!cwPanel.hidden && !cwPanel.contai
 addEventListener('keydown', e => { if (e.key === 'Escape') cwToggle(false); });
 let saved = null; try { saved = localStorage.getItem('cw'); } catch (e) {}
 applyCw(saved || 'obsidian');   // [EDIT] the default colorway for first-time visitors (use any id from the list above)
-const cwItems = [{ l: 'Next colorway', h: 'Action', run: cwNext }, ...palettes.map(p => ({ l: 'Colorway: ' + p.name, h: p.g === 'bold' ? 'Bold' : 'Calm', run: () => applyCw(p.id) }))];
 
 
 // ---------------------------------------------------------------------
-// 5 · COMMAND PALETTE (Ctrl/⌘ + K) — add a command as { l: 'label', h: 'hint', run: () => {...} } in `items`
-// ---------------------------------------------------------------------
-
-const pal = document.getElementById('palette'), pin = document.getElementById('pin'), plist = document.getElementById('plist');
-const secs = [['about', 'About'], ['education', 'Education'], ['experience', 'Experience'], ['projects', 'Projects'], ['skills', 'Skills'], ['awards', 'Awards'], ['gallery', 'Gallery'], ['contact', 'Contact']];   // [section id, label] — each id must exist in index.html
-const items = [   // every palette command
-  ...secs.map(([id, l]) => ({ l: 'Go to ' + l, h: 'Section', run: () => { lockTo(id); document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); } })),
-  ...projects.map((p, i) => ({ l: 'Project: ' + p.t, h: p.c.join(' · '), run: () => {
-    current = 'All'; renderFilters(); renderGrid();
-    lockTo('projects'); document.getElementById('projects').scrollIntoView(); setTimeout(() => grid.querySelector(`[data-i="${i}"]`).click(), 250);
-  } })),
-  ...cwItems,
-  { l: 'Copy email', h: 'Action', run: copyEmail },
-  { l: 'Open GitHub', h: 'Link', run: () => open(`https://github.com/${GH_USER}`, '_blank') },
-  { l: 'View resume', h: 'Link', run: () => open('assets/resume.pdf', '_blank') }
-];
-let sel = 0, shown = items;   // sel = highlighted row · shown = rows matching what you typed
-function drawPal() {
-  plist.innerHTML = shown.map((x, i) => `<li class="${i === sel ? 'sel' : ''}" data-i="${i}">${x.l}<small>${x.h}</small></li>`).join('') || '<li>No results</li>';
-  const s = plist.querySelector('.sel'); if (s) s.scrollIntoView({ block: 'nearest' });
-}
-function openPal() { pin.value = ''; shown = items; sel = 0; drawPal(); pal.showModal(); pin.focus(); }
-function runSel() { const x = shown[sel]; if (!x) return; pal.close(); setTimeout(x.run, 60); }
-pin.addEventListener('input', () => { const q = pin.value.toLowerCase(); shown = items.filter(x => x.l.toLowerCase().includes(q)); sel = 0; drawPal(); });
-pin.addEventListener('keydown', e => {
-  if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(shown.length - 1, sel + 1); drawPal(); }
-  else if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(0, sel - 1); drawPal(); }
-  else if (e.key === 'Enter') runSel();
-});
-plist.addEventListener('click', e => { const li = e.target.closest('li[data-i]'); if (li) { sel = +li.dataset.i; runSel(); } });
-pal.addEventListener('click', e => { if (e.target === pal) pal.close(); });
-document.getElementById('kbd').addEventListener('click', openPal);
-addEventListener('keydown', e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); pal.open ? pal.close() : openPal(); } });
-
-
-
-// ---------------------------------------------------------------------
-// 6 · SLIDE-INS  [EDIT rvSets] — elements start hidden and slide in the first time you reach them.
+// 5 (6) · SLIDE-INS  [EDIT rvSets] — elements start hidden and slide in the first time you reach them.
 //   [CSS selector, direction, ms between items]   l left · r right · u up · lr alternate. Delete a line = no animation.
 // ---------------------------------------------------------------------
 
@@ -329,7 +293,7 @@ function cwSwitch(id, x, y) {   // x, y = where you clicked
 
 
 // ---------------------------------------------------------------------
-// 7 · CODE CARD  [EDIT SNIPS] — types a snippet, "runs" it, prints output, erases, plays the next. Forever.
+// 6 (7) · CODE CARD  [EDIT SNIPS] — types a snippet, "runs" it, prints output, erases, plays the next. Forever.
 // ---------------------------------------------------------------------
 
 const codeBox = document.querySelector('.code'), codeEl = codeBox.querySelector('code');
@@ -476,7 +440,7 @@ new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:
 endlessLoop();
 
 // ---------------------------------------------------------------------
-// 8 · SCROLL FADE
+// 7 (8) · SCROLL FADE
 // ---------------------------------------------------------------------
 
 
@@ -490,7 +454,7 @@ document.querySelectorAll('main section.wrap > :not(h2), footer').forEach(el => 
 });
 
 // ---------------------------------------------------------------------
-// 9 · START — no intro: two frames after load the page is marked "ready" and everything begins
+// 8 (9) · START — no intro: two frames after load the page is marked "ready" and everything begins
 // ---------------------------------------------------------------------
 // Waits two frames so the hidden starting styles are painted first, then marks the page "ready".
 // "ready" is what lets the header drop in, the slide-ins play, the timeline build and the code card start.

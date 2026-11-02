@@ -65,8 +65,6 @@
 
 
 
-    <!-- Opens the command palette (also Ctrl/⌘ + K). See "command palette" in main.js -->
-    <button id="kbd" class="kbd-btn" aria-label="Search and commands"><span>Search</span><kbd>Ctrl K</kbd></button>
   </div>
 </header>
 
@@ -333,7 +331,7 @@
 <!-- PROJECT POPUP — filled by main.js when a card is clicked; nothing to edit -->
 <dialog id="modal">
   <button class="x" id="close" aria-label="Close">×</button>
-  <div class="m-img" id="m-img"><span>Project image</span><img src="assets/LinkinReachly.png" alt=""></div>
+  <div class="m-img" id="m-img"><span>Project image</span></div>
   <div class="m-body">
     <p class="tag" id="m-tag"></p>
     <h3 id="m-title"></h3>
@@ -346,11 +344,6 @@
 
 
 
-<!-- COMMAND PALETTE, jump to sections/projects, copy email, switch colorways -->
-<dialog id="palette" aria-label="Command palette">
-  <input id="pin" placeholder="Type a command or search…" autocomplete="off" spellcheck="false">
-  <ul id="plist"></ul>
-</dialog>
 
 <!-- Small pop-up message (e.g. "Email copied") -->
 <div id="toast" role="status"></div>
